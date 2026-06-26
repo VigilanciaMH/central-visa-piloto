@@ -297,3 +297,90 @@ Object.assign(window.VISA.sources, {
     "url": "https://maravilha.sc.gov.br/vigilancia-sanitaria/"
   }
 });
+
+Object.assign(window.VISA.sources, {
+  "interesseDivs": {
+    "sphere": "Santa Catarina",
+    "title": "Serviços de Interesse da Saúde — DIVS/SC",
+    "description": "Legislação, orientações e referências estaduais para serviços de interesse da saúde.",
+    "url": "https://www.vigilanciasanitaria.sc.gov.br/"
+  },
+  "lei12592": {
+    "sphere": "Federal",
+    "title": "Lei nº 12.592/2012",
+    "description": "Exercício das atividades profissionais de cabeleireiro, barbeiro, esteticista, manicure, pedicure, depilador e maquiador.",
+    "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12592.htm"
+  },
+  "lei13643": {
+    "sphere": "Federal",
+    "title": "Lei nº 13.643/2018",
+    "description": "Regulamenta as profissões de esteticista e cosmetólogo.",
+    "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13643.htm"
+  },
+  "anvisaCosmeticos": {
+    "sphere": "Federal",
+    "title": "Cosméticos — Anvisa",
+    "description": "Regularização, segurança e orientações sobre produtos cosméticos.",
+    "url": "https://www.gov.br/anvisa/pt-br/assuntos/cosmeticos"
+  },
+  "rdc56": {
+    "sphere": "Federal",
+    "title": "RDC Anvisa nº 56/2009",
+    "description": "Proíbe câmaras de bronzeamento artificial por radiação ultravioleta para fins estéticos.",
+    "url": "https://bvsms.saude.gov.br/bvs/saudelegis/anvisa/2009/rdc0056_09_11_2009.html"
+  },
+  "leiSC18630": {
+    "sphere": "Santa Catarina",
+    "title": "Lei Estadual SC nº 18.630/2023",
+    "description": "Regras estaduais relacionadas aos centros de saúde estética.",
+    "url": "https://leis.alesc.sc.gov.br/"
+  },
+  "podologiaSC": {
+    "sphere": "Santa Catarina",
+    "title": "Normas estaduais de podologia",
+    "description": "Referências sanitárias estaduais aplicáveis aos serviços de podologia.",
+    "url": "https://www.vigilanciasanitaria.sc.gov.br/"
+  },
+  "leiSC17502": {
+    "sphere": "Santa Catarina",
+    "title": "Lei Estadual SC nº 17.502/2018",
+    "description": "Disciplina a atividade de podologia no Estado de Santa Catarina.",
+    "url": "https://leis.alesc.sc.gov.br/"
+  },
+  "tatuagemSC": {
+    "sphere": "Santa Catarina",
+    "title": "Lei Estadual SC nº 15.122/2010",
+    "description": "Regras para tatuagem e piercing no Estado de Santa Catarina.",
+    "url": "https://leis.alesc.sc.gov.br/"
+  },
+  "rdc553": {
+    "sphere": "Federal",
+    "title": "RDC Anvisa nº 553/2021",
+    "description": "Requisitos para produtos destinados à pigmentação artificial permanente da pele.",
+    "url": "https://www.gov.br/anvisa/pt-br/assuntos/cosmeticos"
+  },
+  "picsMS": {
+    "sphere": "Federal",
+    "title": "Práticas Integrativas e Complementares — Ministério da Saúde",
+    "description": "Informações oficiais sobre as práticas integrativas e complementares em saúde.",
+    "url": "https://www.gov.br/saude/pt-br/composicao/saps/pics"
+  },
+  "leiSC17706": {
+    "sphere": "Santa Catarina",
+    "title": "Lei Estadual SC nº 17.706/2019",
+    "description": "Política estadual relacionada às práticas integrativas e complementares.",
+    "url": "https://leis.alesc.sc.gov.br/"
+  },
+  "consemaDivs02": {
+    "sphere": "Santa Catarina",
+    "title": "Resolução Conjunta CONSEMA/DIVS nº 02/2019",
+    "description": "Gerenciamento de resíduos de serviços de saúde em Santa Catarina.",
+    "url": "https://www.vigilanciasanitaria.sc.gov.br/"
+  },
+  "protocoloMaravilha": {
+    "sphere": "Maravilha/SC",
+    "title": "Protocolo On-Line",
+    "description": "Canal oficial do Município para solicitações e processos.",
+    "url": "https://maravilha.sc.gov.br/protocolo/"
+  }
+});

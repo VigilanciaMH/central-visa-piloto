@@ -12,6 +12,11 @@
   const searchDialog = document.getElementById("searchDialog");
   const searchInput = document.getElementById("searchInput");
   const searchResults = document.getElementById("searchResults");
+  const officialNoticeLink = document.getElementById("officialNoticeLink");
+  const contactFab = document.getElementById("contactFab");
+  const contactDialog = document.getElementById("contactDialog");
+  const contactClose = document.getElementById("contactClose");
+  const contactContent = document.getElementById("contactContent");
 
   const ICONS = {
     shield: '<svg viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.6-2.8 8-7 10-4.2-2-7-5.4-7-10V6l7-3Z"/><path d="m9 12 2 2 4-5"/></svg>',
@@ -38,6 +43,8 @@
     radiology: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M12 2v6M12 16v6M2 12h6M16 12h6M5 5l4 4M15 15l4 4M19 5l-4 4M9 15l-4 4"/></svg>',
     pharmacy: '<svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M12 7v10M7 12h10"/></svg>',
     spark: '<svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 10-13h-7l0-7Z"/></svg>',
+    leaf: '<svg viewBox="0 0 24 24"><path d="M20 4C12 4 6 8 5 16c5 1 11-1 15-12Z"/><path d="M4 20c4-5 8-8 14-11"/></svg>',
+    foot: '<svg viewBox="0 0 24 24"><path d="M9 4c-2 2-3 6-2 9 1 4 4 7 7 7 3 0 5-2 5-5 0-4-4-4-5-7-1-3-2-5-5-4Z"/><circle cx="6" cy="5" r="1"/><circle cx="9" cy="2.8" r=".8"/></svg>',
     hospital: '<svg viewBox="0 0 24 24"><path d="M4 21V4h16v17M2 21h20M9 8h6M12 5v6M7 15h3v6M14 15h3v6"/></svg>',
     arrow: '<svg viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5"/></svg>',
     chevron: '<svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>',
@@ -104,6 +111,9 @@
   }
 
   function renderTopNavigation(activeAreaId = "") {
+    document.body.dataset.area = activeAreaId || "inicio";
+    officialNoticeLink.href = activeAreaId ? `#area/${activeAreaId}/legislacao` : "#inicio";
+    officialNoticeLink.textContent = activeAreaId ? "Ver legislação desta área" : "Acessar áreas e canais";
     topNavigation.innerHTML = `
       <a href="#inicio" class="${!activeAreaId ? "active" : ""}">Início</a>
       ${areaList().map(area =>
@@ -159,7 +169,7 @@
 
       <section class="area-grid">
         ${areaList().map(area => `
-          <a class="area-card" href="#area/${area.id}">
+          <a class="area-card area-${area.id}" href="#area/${area.id}">
             <span class="area-card-icon">${icon(area.icon)}</span>
             <div>
               <small>${area.questionCount} perguntas${area.supplementCount ? " + complementos" : ""}</small>
@@ -197,7 +207,7 @@
 
       <section class="journey-grid">
         ${area.journeys.map(journey => `
-          <a class="journey-card" href="#area/${area.id}/caminho/${journey.id}">
+          <a class="journey-card area-${area.id}" href="#area/${area.id}/caminho/${journey.id}">
             <span class="journey-icon">${icon(journey.icon)}</span>
             <div>
               <h2>${esc(journey.title)}</h2>
@@ -282,7 +292,7 @@
   }
 
   function categoryCard(area, category) {
-    return `<a class="category-card" href="#area/${area.id}/categoria/${category.id}">
+    return `<a class="category-card area-${area.id}" href="#area/${area.id}/categoria/${category.id}">
       <span class="category-icon">${icon(category.icon)}</span>
       <div>
         <small>${category.questions.length} itens</small>
@@ -320,7 +330,7 @@
   function questionRow(item) {
     const { area, question } = item;
     return `<a class="question-row" href="#area/${area.id}/pergunta/${question.id}">
-      <span class="question-code">${esc(codeFor(area, question))}</span>
+      <span class="question-number">${esc(question.number)}</span>
       <span>${esc(question.title)}</span>
       ${icon("chevron")}
     </a>`;
@@ -339,7 +349,7 @@
       { label: "Início", route: "inicio" },
       { label: area.title, route: `area/${area.id}` },
       { label: category.title, route: `area/${area.id}/categoria/${category.id}` },
-      { label: code, route: `area/${area.id}/pergunta/${question.id}` }
+      { label: `Item ${question.number}`, route: `area/${area.id}/pergunta/${question.id}` }
     ]);
 
     const sources = [...new Set(question.sourceIds || category.sourceIds || [])]
@@ -360,7 +370,7 @@
     transition(`
       <article class="answer-page">
         <header>
-          <p class="question-label">${esc(code)}${question.parentCode ? " · Complemento" : ""}</p>
+          <p class="question-label">Item ${esc(question.number)}${question.parentCode ? " · Complemento" : ""}</p>
           <h1>${esc(question.title)}</h1>
         </header>
 
@@ -371,7 +381,7 @@
 
         ${question.parentCode ? `
           <a class="parent-link" href="#area/${area.id}/pergunta/${category.questions.find(q => codeFor(area, q) === question.parentCode)?.id || ""}">
-            ${icon("arrow")} Voltar para ${esc(question.parentCode)}
+            ${icon("arrow")} Voltar para o item principal
           </a>` : ""}
 
         ${supplements.length && !question.parentCode ? `
@@ -453,7 +463,7 @@
   function renderSearchResults(term) {
     const query = normalize(term.trim());
     if (query.length < 2) {
-      searchResults.innerHTML = `<div class="search-empty">Digite pelo menos duas letras ou um código, como <strong>SAU-191</strong>.</div>`;
+      searchResults.innerHTML = `<div class="search-empty">Digite pelo menos duas letras para localizar uma orientação.</div>`;
       return;
     }
 
@@ -472,7 +482,7 @@
     searchResults.innerHTML = results.length
       ? results.map(item => `
           <a href="#area/${item.area.id}/pergunta/${item.question.id}" class="search-result">
-            <span>${esc(codeFor(item.area, item.question))} · ${esc(item.area.title)}</span>
+            <span>${esc(item.area.title)} · ${esc(item.category.title)}</span>
             <strong>${esc(item.question.title)}</strong>
           </a>
         `).join("")
@@ -498,6 +508,29 @@
     renderNotFound();
   }
 
+  function renderContactChannels() {
+    const channels = config.officialChannels || {};
+    contactContent.innerHTML = `
+      <div class="contact-primary">
+        <small>Vigilância Sanitária</small>
+        <strong>${esc(channels.visaPhone || "Consulte o portal municipal")}</strong>
+        <span>Atendimento e orientação sobre assuntos sanitários.</span>
+      </div>
+      <div class="contact-links">
+        <a href="${esc(channels.visaPage)}" target="_blank" rel="noopener noreferrer">Página da Vigilância ${icon("external")}</a>
+        <a href="${esc(channels.protocol)}" target="_blank" rel="noopener noreferrer">Protocolo On-Line ${icon("external")}</a>
+        <a href="${esc(channels.ombudsman)}" target="_blank" rel="noopener noreferrer">Ouvidoria Municipal ${icon("external")}</a>
+        <a href="${esc(channels.phoneDirectory)}" target="_blank" rel="noopener noreferrer">Telefones e horários ${icon("external")}</a>
+      </div>
+      <p class="contact-note">Para decisões sobre um caso concreto, informe a atividade, o procedimento, os produtos e os equipamentos utilizados.</p>`;
+  }
+
+  contactFab.addEventListener("click", () => {
+    renderContactChannels();
+    contactDialog.showModal();
+  });
+  contactClose.addEventListener("click", () => contactDialog.close());
+
   searchButton.addEventListener("click", () => {
     searchDialog.showModal();
     searchInput.focus();
@@ -516,6 +549,7 @@
       searchInput.focus();
     }
     if (event.key === "Escape" && searchDialog.open) searchDialog.close();
+    if (event.key === "Escape" && contactDialog.open) contactDialog.close();
   });
 
   window.addEventListener("hashchange", () => {

@@ -34,3 +34,11 @@ Código:
 `SAU-191`
 
 Somente esse arquivo precisa ser enviado pelo GitHub Desktop.
+
+
+## Interesse da saúde
+
+- `dados/interesse-saude/area.js`: entrada e caminhos;
+- `dados/interesse-saude/categorias/`: 20 temas e 315 perguntas.
+
+Os prefixos `ALI-`, `SAU-` e `INT-` continuam nos arquivos para manutenção, mas não aparecem na interface pública.

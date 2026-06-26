@@ -1,15 +1,10 @@
 # Central de Conhecimento da Vigilância Sanitária de Maravilha/SC
 
-Esta é a pasta-mãe do projeto.
+Pasta-mãe mantida pelo GitHub Desktop.
 
-## Estrutura principal
+Áreas atuais:
+- Alimentação — 149 perguntas;
+- Serviços de saúde — 303 perguntas e complementos;
+- Interesse da saúde — 315 perguntas.
 
-- `index.html`: abre a Central;
-- `assets/`: visual e funcionamento;
-- `dados/alimentacao/`: conteúdo de Alimentação;
-- `dados/saude/`: conteúdo de Serviços de Saúde;
-- `DOCUMENTACAO/`: guias para edição e GitHub Desktop.
-
-Para testar, dê dois cliques em `index.html`.
-
-Para alterar conteúdo, procure o arquivo da área e do tema. Não é necessário alterar o sistema inteiro.
+Para testar, abra `index.html`. Para editar, altere somente o arquivo da categoria correspondente.
