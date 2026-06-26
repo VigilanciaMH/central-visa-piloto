@@ -384,3 +384,12 @@ Object.assign(window.VISA.sources, {
     "url": "https://maravilha.sc.gov.br/protocolo/"
   }
 });
+
+Object.assign(window.VISA.sources, {
+  "rn012025divs": {
+    "sphere": "Santa Catarina",
+    "title": "RN DIVS nº 01/2025",
+    "description": "Classificação de risco sanitário das atividades econômicas e regras gerais de licenciamento sanitário em Santa Catarina.",
+    "url": "https://www.vigilanciasanitaria.sc.gov.br/"
+  }
+});

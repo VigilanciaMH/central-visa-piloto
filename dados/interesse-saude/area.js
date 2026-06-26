@@ -5,10 +5,15 @@ window.VISA.areas["interesse-saude"] = {
   "icon": "spark",
   "summary": "Orientações para beleza, estética, salões, barbearias, podologia, tatuagem, micropigmentação, massagens e práticas integrativas.",
   "intro": "Escolha o serviço ou a dúvida. O conteúdo aparece aos poucos, conforme a sua navegação.",
-  "questionCount": 315,
+  "questionCount": 375,
   "supplementCount": 0,
   "featured": [
-    "int-017",
+    
+    "int-316",
+    "int-331",
+    "int-340",
+    "int-350",
+    "int-371","int-017",
     "int-031",
     "int-050",
     "int-078",
