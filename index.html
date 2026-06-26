@@ -2,32 +2,37 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Central VISA — Piloto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Central de Conhecimento da Vigilância Sanitária de Maravilha/SC</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div>
-      <strong>Central de Conhecimento da Vigilância Sanitária</strong>
-      <span>Piloto 0.3 — motor estruturado</span>
-    </div>
-    <input id="search" placeholder="Pesquisar: pia, academia, alimentos..." />
-  </header>
-  <main class="layout">
-    <aside class="sidebar">
-      <h3>Árvore de assuntos</h3>
-      <div id="tree"></div>
-    </aside>
-    <section class="content">
-      <div id="home" class="panel">
-        <h1>Central VISA</h1>
-        <p>Este piloto não é fórum. É uma central de consulta: a pessoa escolhe um assunto e vê orientação, interpretação, o que pode ser exigido, o que não pode e a base legal.</p>
-        <div class="cards" id="cards"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">Vigilância Sanitária</div>
+        <h1>Central de Conhecimento da Vigilância Sanitária de Maravilha/SC</h1>
       </div>
-      <article id="detail" class="panel hidden"></article>
-    </section>
-  </main>
+      <div class="top-actions">
+        <button id="btnPrint" title="Imprimir orientação atual">Imprimir</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <div class="search-box">
+          <input id="searchInput" type="search" placeholder="Pesquisar: pia, manipulação, alvará..." autocomplete="off" />
+        </div>
+        <nav id="tree" class="tree" aria-label="Árvore de assuntos"></nav>
+      </aside>
+
+      <section class="content">
+        <div id="breadcrumb" class="breadcrumb"></div>
+        <article id="view" class="card"></article>
+      </section>
+    </main>
+  </div>
+
   <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
