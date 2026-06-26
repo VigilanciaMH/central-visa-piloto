@@ -1,0 +1,18 @@
+VERSÃO SEM PASTAS
+
+Use esta versão se o GitHub não deixar enviar pastas.
+
+Como publicar:
+1. Descompacte este ZIP.
+2. Entre na pasta descompactada.
+3. Selecione TODOS os arquivos.
+4. No GitHub: Add file > Upload files.
+5. Arraste todos os arquivos para a tela.
+6. Clique em Commit changes.
+7. Aguarde o GitHub Pages atualizar.
+8. No site, pressione Ctrl + F5.
+
+Importante:
+- Não envie o ZIP.
+- Envie os arquivos soltos.
+- Esta versão foi adaptada para funcionar sem a pasta dados/.
