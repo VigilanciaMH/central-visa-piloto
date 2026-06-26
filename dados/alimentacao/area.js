@@ -1,5 +1,6 @@
 window.VISA.areas.alimentacao = {
   "id": "alimentacao",
+  "code": "ALI",
   "title": "Alimentação",
   "icon": "utensils",
   "summary": "Orientações para quem produz, manipula, armazena, transporta, comercializa ou consome alimentos.",
