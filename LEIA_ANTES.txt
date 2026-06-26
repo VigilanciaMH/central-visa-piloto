@@ -1,0 +1,24 @@
+VISA Conhecimento Engine 0.3
+
+Como testar no GitHub Pages:
+1. Descompacte este ZIP.
+2. Abra a pasta VISA_Conhecimento_Engine_0.3.
+3. Envie TODOS os arquivos da pasta para a raiz do repositório:
+   - index.html
+   - style.css
+   - data.js
+   - app.js
+   - LEIA_ANTES.txt
+4. No GitHub, clique em Commit changes.
+5. Vá em Settings > Pages.
+6. Source: Deploy from a branch.
+7. Branch: main / root.
+8. Aguarde 1 a 3 minutos.
+9. A URL será parecida com:
+   https://VigilanciaMH.github.io/central-visa-piloto/
+
+Como alterar conteúdo:
+- O conhecimento fica no arquivo data.js.
+- Cada item tem: título, área, resposta, o que pode, o que não pode, depende, fundamento e versão pública.
+
+Este é um piloto para testar a lógica, não conteúdo jurídico final.

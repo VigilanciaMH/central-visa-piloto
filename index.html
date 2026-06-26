@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Central VISA — Piloto</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <strong>Central de Conhecimento da Vigilância Sanitária</strong>
+      <span>Piloto 0.3 — motor estruturado</span>
+    </div>
+    <input id="search" placeholder="Pesquisar: pia, academia, alimentos..." />
+  </header>
+  <main class="layout">
+    <aside class="sidebar">
+      <h3>Árvore de assuntos</h3>
+      <div id="tree"></div>
+    </aside>
+    <section class="content">
+      <div id="home" class="panel">
+        <h1>Central VISA</h1>
+        <p>Este piloto não é fórum. É uma central de consulta: a pessoa escolhe um assunto e vê orientação, interpretação, o que pode ser exigido, o que não pode e a base legal.</p>
+        <div class="cards" id="cards"></div>
+      </div>
+      <article id="detail" class="panel hidden"></article>
+    </section>
+  </main>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
