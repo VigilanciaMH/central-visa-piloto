@@ -546,7 +546,7 @@ button, input { font: inherit; }
     justify-self: stretch;
     overflow-x: auto;
   }
-  .top-navigation a { flex:1; text-align:center; }
+  .top-navigation a { flex:0 0 auto; text-align:center; }
   .main { padding-top:18px; }
   .area-tabs-wrap { top: 124px; }
 }
@@ -596,6 +596,8 @@ h1, h2, h3, .brand strong { font-family: "Manrope", "Inter", sans-serif; }
 body[data-area="alimentacao"] { --accent:#d79a16; --accent-soft:#fff6dd; }
 body[data-area="saude"] { --accent:#197cb4; --accent-soft:#e9f5fb; }
 body[data-area="interesse-saude"] { --accent:#55a88b; --accent-soft:#eaf7f2; }
+body[data-area="produtos"] { --accent:#7657a8; --accent-soft:#f0ebf7; }
+body[data-area="cidadao"] { --accent:#ed6b4b; --accent-soft:#fff0eb; }
 body[data-area="inicio"] { --accent:var(--blue); --accent-soft:#eaf5fa; }
 
 .site-header { min-height:82px; top:5px; grid-template-columns:minmax(275px,1fr) auto minmax(235px,1fr); }
@@ -626,6 +628,8 @@ body[data-area="inicio"] { --accent:var(--blue); --accent-soft:#eaf5fa; }
 .area-alimentacao { --accent:#d79a16; --accent-soft:#fff6dd; }
 .area-saude { --accent:#197cb4; --accent-soft:#e9f5fb; }
 .area-interesse-saude { --accent:#55a88b; --accent-soft:#eaf7f2; }
+.area-produtos { --accent:#7657a8; --accent-soft:#f0ebf7; }
+.area-cidadao { --accent:#ed6b4b; --accent-soft:#fff0eb; }
 .area-card-icon, .journey-icon, .category-icon { color:var(--accent); background:var(--accent-soft); }
 .area-card h2, .journey-card h2, .category-card h2, .area-card p, .journey-card p, .category-card p,
 .question-row > span:nth-child(2), .source-card strong, .source-card p { overflow-wrap:anywhere; word-break:normal; }
@@ -699,3 +703,8 @@ body[data-area="inicio"] { --accent:var(--blue); --accent-soft:#eaf5fa; }
   .question-number { width:34px; height:34px; }
   .official-notice { padding:12px; }
 }
+
+/* Navegação com todas as áreas */
+.top-navigation { max-width:100%; overflow-x:auto; scrollbar-width:none; }
+.top-navigation::-webkit-scrollbar { display:none; }
+.top-navigation a { flex:0 0 auto; white-space:nowrap; }

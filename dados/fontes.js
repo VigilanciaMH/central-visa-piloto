@@ -39,24 +39,24 @@ window.VISA.sources = {
     "sphere": "Federal",
     "title": "RDC Anvisa nº 656/2022",
     "description": "Serviços de alimentação em eventos de massa.",
-    "url": "https://www.vigilanciasanitaria.sc.gov.br/index.php/legislacao-lista-categoria/14-legislacao-por-assunto/15-alimentos/412-boas-praticas-para-servicos-de-alimentacao.html"
+    "url": "https://www.in.gov.br/web/dou/-/resolucao-rdc-n-656-de-24-de-marco-de-2022-389602602"
   },
   "rdc727": {
     "sphere": "Federal",
     "title": "RDC Anvisa nº 727/2022",
     "description": "Requisitos de rotulagem dos alimentos embalados.",
-    "url": "https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2022/regulacao-de-alimentos-consolidacao-de-atos-normativos"
+    "url": "https://www.in.gov.br/en/web/dou/-/resolucao-rdc-n-727-de-1-de-julho-de-2022-413249279"
   },
   "rotulagemNutricional": {
     "sphere": "Federal",
-    "title": "RDC nº 429/2020 e IN nº 75/2020",
-    "description": "Regras de rotulagem nutricional dos alimentos embalados.",
+    "title": "Rotulagem nutricional — Anvisa",
+    "description": "Página oficial com as normas e orientações de rotulagem nutricional.",
     "url": "https://www.gov.br/anvisa/pt-br/assuntos/alimentos/rotulagem/rotulagem-nutricional"
   },
   "regularizacaoAlimentos": {
     "sphere": "Federal",
-    "title": "RDC nº 843/2024 e IN nº 281/2024",
-    "description": "Marco regulatório para regularização de alimentos e embalagens no SNVS.",
+    "title": "Regularização de alimentos — Anvisa",
+    "description": "Página oficial sobre regularização de alimentos e embalagens.",
     "url": "https://www.gov.br/anvisa/pt-br/setorregulado/regularizacao/alimentos/dispensa-de-registro"
   },
   "dtha": {
@@ -75,7 +75,7 @@ window.VISA.sources = {
     "sphere": "Federal",
     "title": "RDC Anvisa nº 622/2022",
     "description": "Funcionamento de empresas especializadas no controle de vetores e pragas urbanas.",
-    "url": "https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2022/anvisa-revisa-e-consolida-normas-das-areas-de-cosmeticos-e-saneantes"
+    "url": "https://www.in.gov.br/en/web/dou/-/resolucao-rdc-n-622-de-9-de-marco-de-2022-386107395"
   },
   "lei6437": {
     "sphere": "Federal",
@@ -142,10 +142,7 @@ window.VISA.sources = {
     "title": "Ouvidoria do Município",
     "description": "Canal municipal para manifestações e solicitações.",
     "url": "https://maravilha.sc.gov.br/ouvidoria/"
-  }
-};
-
-Object.assign(window.VISA.sources, {
+  },
   "rdc63": {
     "sphere": "Federal",
     "title": "RDC Anvisa nº 63/2011",
@@ -180,19 +177,19 @@ Object.assign(window.VISA.sources, {
     "sphere": "Federal",
     "title": "RDC Anvisa nº 222/2018",
     "description": "Boas práticas de gerenciamento dos resíduos de serviços de saúde.",
-    "url": "https://www.gov.br/anvisa/pt-br/assuntos/servicosdesaude/gerenciamento-de-residuos"
+    "url": "https://bvsms.saude.gov.br/bvs/saudelegis/anvisa/2018/rdc0222_28_03_2018.pdf"
   },
   "rdc197": {
     "sphere": "Federal",
     "title": "RDC Anvisa nº 197/2017",
     "description": "Requisitos mínimos para o funcionamento dos serviços de vacinação humana.",
-    "url": "https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2018/servicos-de-vacinacao-nota-tecnica-esclarece-duvidas"
+    "url": "https://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/1432311/do1-2017-12-28-resolucao-rdc-n-197-de-26-de-dezembro-de-2017-1432307"
   },
   "rdc611": {
     "sphere": "Federal",
     "title": "RDC Anvisa nº 611/2022",
     "description": "Requisitos sanitários para serviços de radiologia diagnóstica ou intervencionista.",
-    "url": "https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2020/definidos-os-requisitos-para-servicos-de-radiologia"
+    "url": "https://www.in.gov.br/web/dou/-/resolucao-rdc-n-611-de-9-de-marco-de-2022-386107075"
   },
   "rdc978": {
     "sphere": "Federal",
@@ -240,7 +237,7 @@ Object.assign(window.VISA.sources, {
     "sphere": "Federal",
     "title": "Cadastro Nacional de Estabelecimentos de Saúde — CNES",
     "description": "Informações oficiais sobre o cadastro dos estabelecimentos de saúde.",
-    "url": "https://www.gov.br/saude/pt-br/composicao/sectics/daf/ceaf/faq/o-que-e-o-cnes"
+    "url": "https://cnes.datasus.gov.br/"
   },
   "segurancaPaciente": {
     "sphere": "Federal",
@@ -282,7 +279,7 @@ Object.assign(window.VISA.sources, {
     "sphere": "Santa Catarina",
     "title": "Classificação de risco sanitário de Santa Catarina",
     "description": "Classificação estadual das atividades econômicas para fins sanitários.",
-    "url": "https://www.vigilanciasanitaria.sc.gov.br/"
+    "url": "https://www.vigilanciasanitaria.sc.gov.br/index.php/component/content/article/diretoria-de-vigilancia-sanitaria-publica-nova-resolucao-normativa-n-01-2025-sobre-a-classificacao-de-risco-sanitario.html?Itemid=109&catid=9"
   },
   "habiteMaravilha": {
     "sphere": "Maravilha/SC",
@@ -292,18 +289,15 @@ Object.assign(window.VISA.sources, {
   },
   "alvaraOdontoMaravilha": {
     "sphere": "Maravilha/SC",
-    "title": "Alvará Sanitário para serviços odontológicos",
-    "description": "Serviço municipal específico para estabelecimentos odontológicos.",
-    "url": "https://maravilha.sc.gov.br/vigilancia-sanitaria/"
-  }
-});
-
-Object.assign(window.VISA.sources, {
+    "title": "Alvará Sanitário",
+    "description": "Página municipal sobre solicitação e documentos do alvará sanitário.",
+    "url": "https://maravilha.sc.gov.br/alvara-sanitario/"
+  },
   "interesseDivs": {
     "sphere": "Santa Catarina",
     "title": "Serviços de Interesse da Saúde — DIVS/SC",
     "description": "Legislação, orientações e referências estaduais para serviços de interesse da saúde.",
-    "url": "https://www.vigilanciasanitaria.sc.gov.br/"
+    "url": "https://www.vigilanciasanitaria.sc.gov.br/index.php/component/content/article/servicos-de-interesse-da-saude.html?Itemid=109&catid=38"
   },
   "lei12592": {
     "sphere": "Federal",
@@ -333,31 +327,31 @@ Object.assign(window.VISA.sources, {
     "sphere": "Santa Catarina",
     "title": "Lei Estadual SC nº 18.630/2023",
     "description": "Regras estaduais relacionadas aos centros de saúde estética.",
-    "url": "https://leis.alesc.sc.gov.br/"
+    "url": "https://leis.alesc.sc.gov.br/ato-normativo/21937"
   },
   "podologiaSC": {
     "sphere": "Santa Catarina",
     "title": "Normas estaduais de podologia",
     "description": "Referências sanitárias estaduais aplicáveis aos serviços de podologia.",
-    "url": "https://www.vigilanciasanitaria.sc.gov.br/"
+    "url": "https://www.vigilanciasanitaria.sc.gov.br/index.php/legislacao-lista-categoria/14-legislacao-por-assunto/26-servicos-de-interesse-da-saude/315-beleza-e-estetica/325-podologia.html"
   },
   "leiSC17502": {
     "sphere": "Santa Catarina",
     "title": "Lei Estadual SC nº 17.502/2018",
     "description": "Disciplina a atividade de podologia no Estado de Santa Catarina.",
-    "url": "https://leis.alesc.sc.gov.br/"
+    "url": "https://leis.alesc.sc.gov.br/ato-normativo/20155"
   },
   "tatuagemSC": {
     "sphere": "Santa Catarina",
     "title": "Lei Estadual SC nº 15.122/2010",
     "description": "Regras para tatuagem e piercing no Estado de Santa Catarina.",
-    "url": "https://leis.alesc.sc.gov.br/"
+    "url": "https://leis.alesc.sc.gov.br/ato-normativo/17139"
   },
   "rdc553": {
     "sphere": "Federal",
     "title": "RDC Anvisa nº 553/2021",
     "description": "Requisitos para produtos destinados à pigmentação artificial permanente da pele.",
-    "url": "https://www.gov.br/anvisa/pt-br/assuntos/cosmeticos"
+    "url": "https://www.in.gov.br/en/web/dou/-/resolucao-rdc-n-553-de-30-de-agosto-de-2021-341674751"
   },
   "picsMS": {
     "sphere": "Federal",
@@ -369,27 +363,156 @@ Object.assign(window.VISA.sources, {
     "sphere": "Santa Catarina",
     "title": "Lei Estadual SC nº 17.706/2019",
     "description": "Política estadual relacionada às práticas integrativas e complementares.",
-    "url": "https://leis.alesc.sc.gov.br/"
+    "url": "https://leis.alesc.sc.gov.br/ato-normativo/20400"
   },
   "consemaDivs02": {
     "sphere": "Santa Catarina",
     "title": "Resolução Conjunta CONSEMA/DIVS nº 02/2019",
     "description": "Gerenciamento de resíduos de serviços de saúde em Santa Catarina.",
-    "url": "https://www.vigilanciasanitaria.sc.gov.br/"
+    "url": "https://www.vigilanciasanitaria.sc.gov.br/index.php/component/phocadownload/category/34-profissionais-da-ses/92-saude-ambiental/99-residuos-em-servicos-de-saude/334-legislacao.html?Itemid=109&download=585%3Aresolucao-conjunta-consema-divs-n-02-2019-estabelece-os-requisitos-para-a-elaboracao-do-pgrss"
   },
   "protocoloMaravilha": {
     "sphere": "Maravilha/SC",
     "title": "Protocolo On-Line",
     "description": "Canal oficial do Município para solicitações e processos.",
     "url": "https://maravilha.sc.gov.br/protocolo/"
-  }
-});
-
-Object.assign(window.VISA.sources, {
+  },
   "rn012025divs": {
     "sphere": "Santa Catarina",
     "title": "RN DIVS nº 01/2025",
     "description": "Classificação de risco sanitário das atividades econômicas e regras gerais de licenciamento sanitário em Santa Catarina.",
-    "url": "https://www.vigilanciasanitaria.sc.gov.br/"
+    "url": "https://www.vigilanciasanitaria.sc.gov.br/index.php/component/content/article/diretoria-de-vigilancia-sanitaria-publica-nova-resolucao-normativa-n-01-2025-sobre-a-classificacao-de-risco-sanitario.html?Itemid=109&catid=9"
+  },
+  "resolucaoCNS588": {
+    "sphere": "Federal",
+    "title": "Resolução CNS nº 588/2018",
+    "description": "Institui a Política Nacional de Vigilância em Saúde.",
+    "url": "https://conselho.saude.gov.br/resolucoes/2018/Reso588.pdf"
+  },
+  "aceMS": {
+    "sphere": "Federal",
+    "title": "Agentes de Combate às Endemias — Ministério da Saúde",
+    "description": "Informações oficiais sobre a atuação dos agentes.",
+    "url": "https://www.gov.br/saude/pt-br/composicao/svsa/saude-ambiental/ace"
+  },
+  "lei13595": {
+    "sphere": "Federal",
+    "title": "Lei Federal nº 13.595/2018",
+    "description": "Trata das atividades dos Agentes Comunitários de Saúde e dos Agentes de Combate às Endemias.",
+    "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13595.htm"
+  },
+  "lei9782": {
+    "sphere": "Federal",
+    "title": "Lei Federal nº 9.782/1999",
+    "description": "Define o Sistema Nacional de Vigilância Sanitária e cria a Anvisa.",
+    "url": "https://www.planalto.gov.br/ccivil_03/leis/l9782.htm"
+  },
+  "visaEpidemiologicaMaravilha": {
+    "sphere": "Municipal",
+    "title": "Vigilância Epidemiológica de Maravilha",
+    "description": "Serviço municipal e informações para contato.",
+    "url": "https://maravilha.sc.gov.br/cartaservicos/detalhe-vigilancia-epidemiologica1/"
+  },
+  "combateDengueMaravilha": {
+    "sphere": "Municipal",
+    "title": "Equipe de Combate à Dengue de Maravilha",
+    "description": "Serviço municipal para comunicar focos e receber orientação.",
+    "url": "https://maravilha.sc.gov.br/cartaservicos/detalhe-equipe-de-combate-a-dengue/"
+  },
+  "telefonesMaravilha": {
+    "sphere": "Municipal",
+    "title": "Telefones e horários do Município",
+    "description": "Lista oficial de telefones e horários de atendimento.",
+    "url": "https://maravilha.sc.gov.br/telefones-horarios/"
+  },
+  "alertaGolpeVisaSC": {
+    "sphere": "Estadual",
+    "title": "Alerta sobre golpe em nome da Vigilância Sanitária",
+    "description": "Orientação da Secretaria de Estado da Saúde de Santa Catarina.",
+    "url": "https://www.saude.sc.gov.br/index.php/pt/component/content/article/saude-alerta-sobre-tentativa-de-golpe-em-nome-da-vigilancia-sanitaria-de-santa-catarina?Itemid=101&catid=84"
+  },
+  "lei6360": {
+    "sphere": "Federal",
+    "title": "Lei Federal nº 6.360/1976",
+    "description": "Dispõe sobre a vigilância sanitária de medicamentos, cosméticos, saneantes e outros produtos.",
+    "url": "https://www.planalto.gov.br/ccivil_03/leis/l6360.htm"
+  },
+  "consultaAFEAnvisa": {
+    "sphere": "Federal",
+    "title": "Autorização de Funcionamento — Anvisa",
+    "description": "Página oficial sobre AFE e AE.",
+    "url": "https://www.gov.br/anvisa/pt-br/setorregulado/autorizacao-de-funcionamento-afe-ou-ae"
+  },
+  "consultaRegistroAnvisa": {
+    "sphere": "Federal",
+    "title": "Consulta a produtos regularizados — Anvisa",
+    "description": "Sistemas oficiais para consultar registros e notificações.",
+    "url": "https://www.gov.br/anvisa/pt-br/sistemas/consulta-a-registro"
+  },
+  "produtosIrregularesAnvisa": {
+    "sphere": "Federal",
+    "title": "Produtos irregulares — Anvisa",
+    "description": "Consulta de proibições, apreensões, suspensões e recolhimentos.",
+    "url": "https://www.gov.br/anvisa/pt-br/assuntos/fiscalizacao-e-monitoramento/produtos-irregulares"
+  },
+  "vigilanciaSaneantesAnvisa": {
+    "sphere": "Federal",
+    "title": "Vigilância de saneantes — Anvisa",
+    "description": "Informações oficiais sobre fiscalização e monitoramento de saneantes.",
+    "url": "https://www.gov.br/anvisa/pt-br/assuntos/fiscalizacao-e-monitoramento/vigilancia-de-saneantes"
+  },
+  "dispositivosRegularizadosAnvisa": {
+    "sphere": "Federal",
+    "title": "Dispositivos médicos regularizados — Anvisa",
+    "description": "Consulta oficial de dispositivos médicos regularizados.",
+    "url": "https://www.gov.br/anvisa/pt-br/assuntos/produtosparasaude/lista-de-dispositivos-medicos-regularizados"
+  },
+  "eNotivisa": {
+    "sphere": "Federal",
+    "title": "e-Notivisa — Anvisa",
+    "description": "Sistema para notificar eventos adversos e queixas técnicas.",
+    "url": "https://www.gov.br/anvisa/pt-br/assuntos/fiscalizacao-e-monitoramento/notificacoes/e-notivisa"
+  },
+  "renaciat": {
+    "sphere": "Federal",
+    "title": "Centros de Informação e Assistência Toxicológica",
+    "description": "Contatos oficiais para orientação em casos de intoxicação.",
+    "url": "https://www.gov.br/anvisa/pt-br/assuntos/fiscalizacao-e-monitoramento/renaciat"
+  },
+  "rdc907": {
+    "sphere": "Federal",
+    "title": "RDC Anvisa nº 907/2024",
+    "description": "Requisitos para regularização de produtos de higiene pessoal, cosméticos e perfumes.",
+    "url": "https://www.in.gov.br/en/web/dou/-/resolucao-rdc-n-907-de-19-de-setembro-de-2024-585939539"
+  },
+  "rdc898": {
+    "sphere": "Federal",
+    "title": "RDC Anvisa nº 898/2024",
+    "description": "Exige a descrição da composição em português na rotulagem de produtos de higiene pessoal, cosméticos e perfumes.",
+    "url": "https://pesquisa.in.gov.br/imprensa/servlet/INPDFViewer?captchafield=firstAccess&data=02%2F09%2F2024&jornal=515&pagina=152"
+  },
+  "rdc894": {
+    "sphere": "Federal",
+    "title": "RDC Anvisa nº 894/2024",
+    "description": "Boas práticas de cosmetovigilância para empresas titulares de produtos cosméticos.",
+    "url": "https://www.in.gov.br/en/web/dou/-/resolucao-rdc-n-894-de-27-de-agosto-de-2024-580844192"
+  },
+  "rdc989": {
+    "sphere": "Federal",
+    "title": "RDC Anvisa nº 989/2025",
+    "description": "Requisitos para regularização de produtos saneantes.",
+    "url": "https://www.in.gov.br/en/web/dou/-/resolucao-da-diretoria-colegiada-anvisa-n-989-de-15-de-agosto-de-2025-649615571"
+  },
+  "in394": {
+    "sphere": "Federal",
+    "title": "Instrução Normativa Anvisa nº 394/2025",
+    "description": "Regras complementares para produtos saneantes.",
+    "url": "https://www.in.gov.br/en/web/dou/-/instrucao-normativa-anvisa-n-394-de-15-de-agosto-de-2025-649617108"
+  },
+  "rdc751": {
+    "sphere": "Federal",
+    "title": "RDC Anvisa nº 751/2022",
+    "description": "Classificação de risco e regularização de dispositivos médicos.",
+    "url": "https://www.in.gov.br/en/web/dou/-/resolucao-rdc-n-751-de-15-de-setembro-de-2022-430797145"
   }
-});
+};

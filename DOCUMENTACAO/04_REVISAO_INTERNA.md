@@ -1,6 +1,6 @@
 # Controle interno de revisão
 
-Os conteúdos foram estruturados a partir dos materiais técnicos fornecidos para Alimentação e Serviços de Saúde.
+Os conteúdos foram estruturados a partir dos materiais técnicos fornecidos para Alimentação, Serviços de Saúde, Interesse da Saúde, Produtos sob Vigilância Sanitária e Vigilância Sanitária e o Cidadão.
 
 Antes da migração para o repositório oficial:
 

@@ -2,10 +2,11 @@ window.VISA.areas.saude = {
   "id": "saude",
   "code": "SAU",
   "title": "Serviços de saúde",
+  "navTitle": "Saúde",
   "icon": "medical",
   "summary": "Orientações para consultórios, clínicas, odontologia, laboratórios, vacinação, farmácias e outros serviços.",
-  "intro": "Escolha um caminho para consultar apenas o assunto de que precisa.",
-  "questionCount": 303,
+  "intro": "Clique em uma opção para encontrar a dúvida que deseja consultar.",
+  "questionCount": 304,
   "supplementCount": 1,
   "featured": [
     "sau-015",
@@ -50,7 +51,7 @@ window.VISA.areas.saude = {
       "id": "abrir",
       "icon": "building",
       "title": "Quero abrir, reformar ou ampliar",
-      "description": "Planejamento, imóvel, projeto, documentação, equipe e licenciamento.",
+      "description": "Clique para ver imóvel, projeto, documentos, equipe e licenciamento.",
       "categoryIds": [
         "abrir-reformar-ampliar-saude",
         "responsabilidade-equipe-documentos",
@@ -61,7 +62,7 @@ window.VISA.areas.saude = {
       "id": "rotina",
       "icon": "clipboard",
       "title": "Quero organizar a rotina do serviço",
-      "description": "Biossegurança, limpeza, esterilização, medicamentos, resíduos e segurança do paciente.",
+      "description": "Clique para ver biossegurança, limpeza, esterilização, medicamentos, resíduos e segurança do paciente.",
       "categoryIds": [
         "biosseguranca-saude-trabalhador",
         "limpeza-ambiente-saude",
@@ -75,7 +76,7 @@ window.VISA.areas.saude = {
       "id": "tipo-servico",
       "icon": "medical",
       "title": "Quero encontrar meu tipo de serviço",
-      "description": "Consultórios, odontologia, laboratórios, vacinação, radiologia, farmácias, estética e serviços especiais.",
+      "description": "Clique para escolher o tipo de serviço.",
       "categoryIds": [
         "consultorios-clinicas-procedimentos",
         "odontologia",
@@ -91,7 +92,7 @@ window.VISA.areas.saude = {
       "id": "cidadao",
       "icon": "users",
       "title": "Sou paciente, responsável ou consumidor",
-      "description": "Privacidade, segurança, denúncias, inspeções e orientação sobre serviços.",
+      "description": "Clique para ver privacidade, segurança, denúncias e inspeções.",
       "categoryIds": [
         "seguranca-paciente-prontuario",
         "consumidores-denuncias-fiscalizacao-saude"

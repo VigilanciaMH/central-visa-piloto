@@ -2,7 +2,7 @@ window.VISA.categories.push({
   "id": "rn-01-2025-licenciamento-sanitario",
   "areaId": "interesse-saude",
   "number": 21,
-  "title": "RN nº 01/2025: licenciamento sanitário sem complicação",
+  "title": "RN nº 01/2025: licenciamento sanitário",
   "description": "Regras gerais sobre licenciamento, autodeclaração, CNAEs, atividades no mesmo endereço, PBA e fiscalização. Este tema não determina o enquadramento de um estabelecimento específico.",
   "icon": "clipboard",
   "sourceIds": [

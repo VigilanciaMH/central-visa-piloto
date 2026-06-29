@@ -6,15 +6,23 @@ Cada grande tema possui seu próprio arquivo.
 
 ### Alimentação
 
-Exemplo:
-
 `dados/alimentacao/categorias/03-estrutura-e-ambiente.js`
 
-### Serviços de Saúde
-
-Exemplo:
+### Serviços de saúde
 
 `dados/saude/categorias/13-laboratorios-exames.js`
+
+### Interesse da saúde
+
+`dados/interesse-saude/categorias/02-abrir-regularizar-interesse.js`
+
+### Produtos sob Vigilância Sanitária
+
+`dados/produtos/categorias/01-entendendo-produtos.js`
+
+### Vigilância Sanitária e o cidadão
+
+`dados/cidadao/categorias/01-as-vigilancias-nao-sao-a-mesma-coisa.js`
 
 ## Alterar o item 191 da Saúde
 
@@ -62,4 +70,4 @@ Depois de salvar:
 
 1. dê dois cliques em `index.html`;
 2. pressione `Ctrl + F5`;
-3. pesquise pelo código.
+3. pesquise pelo código ou por uma palavra da pergunta.

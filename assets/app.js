@@ -112,12 +112,19 @@
 
   function renderTopNavigation(activeAreaId = "") {
     document.body.dataset.area = activeAreaId || "inicio";
-    officialNoticeLink.href = activeAreaId ? `#area/${activeAreaId}/legislacao` : "#inicio";
-    officialNoticeLink.textContent = activeAreaId ? "Ver legislação desta área" : "Acessar áreas e canais";
+    officialNoticeLink.href = activeAreaId ? `#area/${activeAreaId}/legislacao` : config.officialChannels.visaPage;
+    officialNoticeLink.textContent = activeAreaId ? "Abrir fontes desta área" : "Abrir página oficial";
+    if (activeAreaId) {
+      officialNoticeLink.removeAttribute("target");
+      officialNoticeLink.removeAttribute("rel");
+    } else {
+      officialNoticeLink.target = "_blank";
+      officialNoticeLink.rel = "noopener noreferrer";
+    }
     topNavigation.innerHTML = `
       <a href="#inicio" class="${!activeAreaId ? "active" : ""}">Início</a>
       ${areaList().map(area =>
-        `<a href="#area/${area.id}" class="${activeAreaId === area.id ? "active" : ""}">${esc(area.title)}</a>`
+        `<a href="#area/${area.id}" class="${activeAreaId === area.id ? "active" : ""}">${esc(area.navTitle || area.title)}</a>`
       ).join("")}
     `;
   }
@@ -162,9 +169,9 @@
 
     transition(`
       <section class="hero">
-        <p class="kicker">Informação sanitária organizada</p>
-        <h1>Encontre uma orientação sem receber tudo de uma vez.</h1>
-        <p>Escolha uma área, avance por assuntos e abra apenas a pergunta que deseja consultar.</p>
+        <p class="kicker">Dúvidas e respostas</p>
+        <h1>Escolha o assunto da sua dúvida.</h1>
+        <p>Clique em uma área para ver as perguntas e respostas.</p>
       </section>
 
       <section class="area-grid">
@@ -179,12 +186,6 @@
             ${icon("arrow", "arrow")}
           </a>
         `).join("")}
-      </section>
-
-      <section class="home-note">
-        <div><strong>Escolha</strong><span>Entre pela área relacionada à sua dúvida.</span></div>
-        <div><strong>Navegue</strong><span>Use as abas e os caminhos apresentados no centro da tela.</span></div>
-        <div><strong>Consulte</strong><span>Abra a resposta e, quando necessário, as fontes relacionadas.</span></div>
       </section>
     `);
   }
@@ -207,7 +208,7 @@
 
       <section class="journey-grid">
         ${area.journeys.map(journey => `
-          <a class="journey-card area-${area.id}" href="#area/${area.id}/caminho/${journey.id}">
+          <a class="journey-card area-${area.id}" href="#area/${journey.route ? journey.route : `${area.id}/caminho/${journey.id}`}">
             <span class="journey-icon">${icon(journey.icon)}</span>
             <div>
               <h2>${esc(journey.title)}</h2>
@@ -241,7 +242,7 @@
     ]);
 
     transition(`
-      ${pageHeader("Biblioteca", "Perguntas e respostas", "Escolha um tema. A resposta só aparece depois que você abre a pergunta desejada.")}
+      ${pageHeader("Perguntas", "Perguntas e respostas", "Clique em um tema para ver as perguntas.")}
       <section class="category-grid">
         ${categoriesFor(areaId).map(category => categoryCard(area, category)).join("")}
       </section>
@@ -261,7 +262,7 @@
     ]);
 
     transition(`
-      ${pageHeader("Mapa da área", "Temas disponíveis", "Abra um tema para consultar somente as perguntas relacionadas.")}
+      ${pageHeader("Temas", "Temas disponíveis", "Clique em um tema para ver as perguntas.")}
       <section class="category-grid">
         ${categoriesFor(areaId).map(category => categoryCard(area, category)).join("")}
       </section>
@@ -284,7 +285,7 @@
     const categories = journey.categoryIds.map(id => categoryById(areaId, id)).filter(Boolean);
 
     transition(`
-      ${pageHeader("Caminho de orientação", journey.title, journey.description)}
+      ${pageHeader("Perguntas por assunto", journey.title, journey.description)}
       <section class="category-grid">
         ${categories.map(category => categoryCard(area, category)).join("")}
       </section>
@@ -352,7 +353,7 @@
       { label: `Item ${question.number}`, route: `area/${area.id}/pergunta/${question.id}` }
     ]);
 
-    const sources = [...new Set(question.sourceIds || category.sourceIds || [])]
+    const sources = [...new Set([...(category.sourceIds || []), ...(question.sourceIds || [])])]
       .map(id => data.sources[id]).filter(Boolean);
 
     const supplements = category.questions.filter(q =>
@@ -393,12 +394,12 @@
           </section>` : ""}
 
         <details class="sources">
-          <summary>${icon("book")} Fontes relacionadas ${icon("chevron")}</summary>
+          <summary>${icon("book")} Fontes oficiais ${icon("chevron")}</summary>
           <div class="source-grid">${sources.map(sourceCard).join("")}</div>
         </details>
 
         <section class="related">
-          <div class="section-heading"><div><p class="kicker">Continue navegando</p><h2>Itens próximos</h2></div></div>
+          <div class="section-heading"><div><p class="kicker">Outras dúvidas</p><h2>Perguntas relacionadas</h2></div></div>
           <div class="question-list">${related.map(q => questionRow({ area, category, question: q })).join("")}</div>
         </section>
 
@@ -429,9 +430,12 @@
     ]);
 
     const usedIds = new Set();
-    categoriesFor(areaId).forEach(category =>
-      (category.sourceIds || []).forEach(id => usedIds.add(id))
-    );
+    categoriesFor(areaId).forEach(category => {
+      (category.sourceIds || []).forEach(id => usedIds.add(id));
+      category.questions.forEach(question =>
+        (question.sourceIds || []).forEach(id => usedIds.add(id))
+      );
+    });
 
     const sources = [...usedIds].map(id => data.sources[id]).filter(Boolean);
     const groups = {};
@@ -441,7 +445,7 @@
     });
 
     transition(`
-      ${pageHeader("Referências", "Legislação e fontes", "Abra somente a esfera ou a fonte que deseja consultar.")}
+      ${pageHeader("Fontes oficiais", "Legislação e fontes", "Clique em uma fonte para abrir a página oficial.")}
       <section class="law-groups">
         ${Object.entries(groups).map(([sphere, list], index) => `
           <details class="law-group" ${index === 0 ? "open" : ""}>
@@ -463,7 +467,7 @@
   function renderSearchResults(term) {
     const query = normalize(term.trim());
     if (query.length < 2) {
-      searchResults.innerHTML = `<div class="search-empty">Digite pelo menos duas letras para localizar uma orientação.</div>`;
+      searchResults.innerHTML = `<div class="search-empty">Digite pelo menos duas letras para pesquisar.</div>`;
       return;
     }
 
@@ -514,7 +518,7 @@
       <div class="contact-primary">
         <small>Vigilância Sanitária</small>
         <strong>${esc(channels.visaPhone || "Consulte o portal municipal")}</strong>
-        <span>Atendimento e orientação sobre assuntos sanitários.</span>
+        <span>Clique nos canais abaixo para falar com o Município.</span>
       </div>
       <div class="contact-links">
         <a href="${esc(channels.visaPage)}" target="_blank" rel="noopener noreferrer">Página da Vigilância ${icon("external")}</a>
@@ -522,7 +526,7 @@
         <a href="${esc(channels.ombudsman)}" target="_blank" rel="noopener noreferrer">Ouvidoria Municipal ${icon("external")}</a>
         <a href="${esc(channels.phoneDirectory)}" target="_blank" rel="noopener noreferrer">Telefones e horários ${icon("external")}</a>
       </div>
-      <p class="contact-note">Para decisões sobre um caso concreto, informe a atividade, o procedimento, os produtos e os equipamentos utilizados.</p>`;
+      <p class="contact-note">Ao entrar em contato, informe o endereço e explique a sua dúvida.</p>`;
   }
 
   contactFab.addEventListener("click", () => {

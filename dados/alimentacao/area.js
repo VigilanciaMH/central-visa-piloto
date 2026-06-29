@@ -2,9 +2,10 @@ window.VISA.areas.alimentacao = {
   "id": "alimentacao",
   "code": "ALI",
   "title": "Alimentação",
+  "navTitle": "Alimentação",
   "icon": "utensils",
   "summary": "Orientações para quem produz, manipula, armazena, transporta, comercializa ou consome alimentos.",
-  "intro": "Escolha um caminho e avance apenas até a informação de que precisa.",
+  "intro": "Clique em uma opção para encontrar a dúvida que deseja consultar.",
   "questionCount": 149,
   "featured": [
     "ali-011",
@@ -39,7 +40,7 @@ window.VISA.areas.alimentacao = {
       "id": "abrir",
       "icon": "building",
       "title": "Quero abrir, reformar ou ampliar",
-      "description": "Comece pelo planejamento, regularização, estrutura e documentos.",
+      "description": "Clique para ver planejamento, regularização, estrutura e documentos.",
       "categoryIds": [
         "abrir-mudar-ampliar",
         "estrutura-e-ambiente",
@@ -51,7 +52,7 @@ window.VISA.areas.alimentacao = {
       "id": "rotina",
       "icon": "clipboard",
       "title": "Tenho uma dúvida da rotina",
-      "description": "Pesquise cuidados com pessoas, alimentos, temperaturas, limpeza e registros.",
+      "description": "Clique para ver cuidados com pessoas, alimentos, temperaturas, limpeza e registros.",
       "categoryIds": [
         "manipuladores",
         "compra-e-armazenamento",
@@ -65,7 +66,7 @@ window.VISA.areas.alimentacao = {
       "id": "consumidor",
       "icon": "heart",
       "title": "Sou consumidor",
-      "description": "Saiba o que observar, como agir diante de um problema e quais canais utilizar.",
+      "description": "Clique para saber o que observar e onde comunicar um problema.",
       "categoryIds": [
         "rotulos-e-consumidor",
         "consumidores-e-fiscalizacao"
@@ -75,7 +76,7 @@ window.VISA.areas.alimentacao = {
       "id": "legislacao",
       "icon": "book",
       "title": "Quero consultar a legislação",
-      "description": "Acesse as principais referências federais, estaduais e municipais.",
+      "description": "Clique para abrir as fontes oficiais desta área.",
       "route": "alimentacao/legislacao"
     }
   ]

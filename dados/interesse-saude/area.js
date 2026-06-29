@@ -2,9 +2,10 @@ window.VISA.areas["interesse-saude"] = {
   "id": "interesse-saude",
   "code": "INT",
   "title": "Interesse da saúde",
+  "navTitle": "Interesse da saúde",
   "icon": "spark",
   "summary": "Orientações para beleza, estética, salões, barbearias, podologia, tatuagem, micropigmentação, massagens e práticas integrativas.",
-  "intro": "Escolha o serviço ou a dúvida. O conteúdo aparece aos poucos, conforme a sua navegação.",
+  "intro": "Clique em uma opção para encontrar a dúvida que deseja consultar.",
   "questionCount": 375,
   "supplementCount": 0,
   "featured": [
@@ -49,25 +50,27 @@ window.VISA.areas["interesse-saude"] = {
     "residuos-acidentes-intercorrencias",
     "atendimento-domiciliar-compartilhado",
     "cliente-consentimento-publicidade",
-    "inspecao-denuncia-correcao"
+    "inspecao-denuncia-correcao",
+    "rn-01-2025-licenciamento-sanitario"
   ],
   "journeys": [
     {
       "id": "abrir",
       "icon": "building",
       "title": "Quero abrir ou regularizar",
-      "description": "Licença, imóvel, estrutura, qualificação, produtos e atividades declaradas.",
+      "description": "Clique para ver licença, imóvel, estrutura, qualificação e produtos.",
       "categoryIds": [
         "abrir-regularizar-interesse",
         "formacao-limites-atuacao",
-        "estrutura-privacidade-ambiente"
+        "estrutura-privacidade-ambiente",
+        "rn-01-2025-licenciamento-sanitario"
       ]
     },
     {
       "id": "tipo-servico",
       "icon": "spark",
       "title": "Quero encontrar meu tipo de serviço",
-      "description": "Salão, barbearia, unhas, estética, massagem, podologia, tatuagem, micropigmentação e práticas integrativas.",
+      "description": "Clique para escolher o tipo de serviço.",
       "categoryIds": [
         "cabeleireiro-barbearia",
         "manicure-pedicure-unhas",
@@ -84,7 +87,7 @@ window.VISA.areas["interesse-saude"] = {
       "id": "higiene",
       "icon": "sterilize",
       "title": "Quero organizar higiene e segurança",
-      "description": "Mãos, EPIs, limpeza, esterilização, produtos, equipamentos, resíduos e acidentes.",
+      "description": "Clique para ver higiene, EPIs, esterilização, produtos, resíduos e acidentes.",
       "categoryIds": [
         "higiene-maos-epi",
         "limpeza-desinfeccao-esterilizacao",
@@ -96,7 +99,7 @@ window.VISA.areas["interesse-saude"] = {
       "id": "cliente",
       "icon": "users",
       "title": "Sou cliente ou responsável",
-      "description": "Consentimento, menores, publicidade, registros, denúncias e fiscalização.",
+      "description": "Clique para ver consentimento, publicidade, denúncias e fiscalização.",
       "categoryIds": [
         "cliente-consentimento-publicidade",
         "inspecao-denuncia-correcao"

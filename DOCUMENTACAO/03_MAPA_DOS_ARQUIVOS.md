@@ -10,22 +10,20 @@
 ## Arquivos gerais
 
 - `dados/configuracao.js`: título, data e ordem das áreas;
-- `dados/fontes.js`: fontes e links utilizados.
+- `dados/fontes.js`: fontes oficiais e links utilizados.
 
-## Alimentação
+## Áreas e conteúdos
 
-- `dados/alimentacao/area.js`: entrada e caminhos da área;
-- `dados/alimentacao/categorias/`: perguntas separadas por tema.
-
-## Serviços de Saúde
-
-- `dados/saude/area.js`: entrada e caminhos da área;
-- `dados/saude/categorias/`: 19 temas e as respectivas perguntas.
+- `dados/alimentacao/area.js` e `dados/alimentacao/categorias/`: 149 perguntas;
+- `dados/saude/area.js` e `dados/saude/categorias/`: 304 perguntas e complementos;
+- `dados/interesse-saude/area.js` e `dados/interesse-saude/categorias/`: 375 perguntas;
+- `dados/produtos/area.js` e `dados/produtos/categorias/`: 215 perguntas;
+- `dados/cidadao/area.js` e `dados/cidadao/categorias/`: 188 perguntas.
 
 ## Exemplo rápido
 
 Pedido:
-“João, precisamos alterar a pergunta 191 da Saúde.”
+“Precisamos alterar a pergunta 191 da Saúde.”
 
 Arquivo:
 `dados/saude/categorias/13-laboratorios-exames.js`
@@ -35,10 +33,4 @@ Código:
 
 Somente esse arquivo precisa ser enviado pelo GitHub Desktop.
 
-
-## Interesse da saúde
-
-- `dados/interesse-saude/area.js`: entrada e caminhos;
-- `dados/interesse-saude/categorias/`: 20 temas e 315 perguntas.
-
-Os prefixos `ALI-`, `SAU-` e `INT-` continuam nos arquivos para manutenção, mas não aparecem na interface pública.
+Os prefixos `ALI-`, `SAU-`, `INT-`, `PRO-` e `CID-` continuam nos arquivos para manutenção, mas não aparecem na interface pública.
