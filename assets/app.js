@@ -219,9 +219,30 @@
     const avisos = noticeList();
     if (!avisos.length) return "";
     const aviso = avisos.find(item => item.destaque) || avisos[0];
-    return `<section class="notice-home-card" style="--notice-accent:${esc(cssColor(aviso.cor))}">
+    const total = avisos.length;
+    const totalAvisos = avisos.filter(item => String(item.categoria || "").toLowerCase().includes("aviso")).length;
+    const totalCampanhas = avisos.filter(item => String(item.categoria || "").toLowerCase().includes("campanha")).length;
+    const resumoContagem = `${totalAvisos} aviso${totalAvisos === 1 ? "" : "s"} e ${totalCampanhas} campanha${totalCampanhas === 1 ? "" : "s"} ativos`;
+
+    return `<section class="notice-home-dashboard" aria-label="Resumo de avisos e campanhas">
+      <a class="notice-count-card" href="#avisos">
+        <span class="kicker">Avisos e campanhas</span>
+        <strong>${total}</strong>
+        <p>${esc(resumoContagem)} na central.</p>
+        <small>Ver todos ${icon("arrow")}</small>
+      </a>
+      <aside class="notice-alert-card">
+        <span class="notice-alert-icon">${icon("info")}</span>
+        <div>
+          <strong>Atenção aos comunicados</strong>
+          <p>Confira os avisos antes de orientar o descarte, divulgar campanhas ou repassar informações ao público.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="notice-home-card" style="--notice-accent:${esc(cssColor(aviso.cor))}">
       <div class="notice-home-copy">
-        <p class="kicker">Avisos e campanhas</p>
+        <p class="kicker">Em destaque</p>
         <h2>${esc(aviso.titulo)}</h2>
         <p>${esc(aviso.resumo)}</p>
         <a href="#avisos/${esc(aviso.id)}">Ver orientação ${icon("arrow")}</a>
