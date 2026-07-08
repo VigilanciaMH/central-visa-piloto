@@ -49,7 +49,8 @@
     arrow: '<svg viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5"/></svg>',
     chevron: '<svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>',
     external: '<svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 13v7H4V6h7"/></svg>',
-    info: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg>'
+    info: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg>',
+    megaphone: '<svg viewBox="0 0 24 24"><path d="M4 13h4l10 5V6L8 11H4v2Z"/><path d="M8 13v5a2 2 0 0 0 2 2h1"/><path d="M20 9v6"/></svg>'
   };
 
   const icon = (name, cls = "") =>
@@ -85,6 +86,26 @@
     )
   );
 
+  const allQuestionsFor = areaId => {
+    const area = data.areas[areaId];
+    if (!area) return [];
+    return categoriesFor(areaId).flatMap(category =>
+      category.questions.map(question => ({ area, category, question }))
+    ).sort((a, b) =>
+      (a.question.sort ?? Number(a.question.number)) - (b.question.sort ?? Number(b.question.number))
+    );
+  };
+
+  const noticeList = () => Array.isArray(window.VISA_AVISOS)
+    ? window.VISA_AVISOS.filter(aviso => aviso.status !== "inativo")
+    : [];
+
+  const noticeById = id => noticeList().find(aviso => aviso.id === id);
+
+  const cssColor = value => /^#[0-9a-f]{3,8}$/i.test(String(value || ""))
+    ? value
+    : "#2f9e44";
+
   function codeFor(area, question) {
     if (question.code) return question.code;
     const n = String(question.number);
@@ -110,8 +131,8 @@
     ).join("");
   }
 
-  function renderTopNavigation(activeAreaId = "") {
-    document.body.dataset.area = activeAreaId || "inicio";
+  function renderTopNavigation(activeAreaId = "", activePage = "") {
+    document.body.dataset.area = activePage || activeAreaId || "inicio";
     officialNoticeLink.href = activeAreaId ? `#area/${activeAreaId}/legislacao` : config.officialChannels.visaPage;
     officialNoticeLink.textContent = activeAreaId ? "Abrir fontes desta área" : "Abrir página oficial";
     if (activeAreaId) {
@@ -122,7 +143,8 @@
       officialNoticeLink.rel = "noopener noreferrer";
     }
     topNavigation.innerHTML = `
-      <a href="#inicio" class="${!activeAreaId ? "active" : ""}">Início</a>
+      <a href="#inicio" class="${!activeAreaId && activePage !== "avisos" ? "active" : ""}">Início</a>
+      <a href="#avisos" class="${activePage === "avisos" ? "active" : ""}">Avisos e Campanhas</a>
       ${areaList().map(area =>
         `<a href="#area/${area.id}" class="${activeAreaId === area.id ? "active" : ""}">${esc(area.navTitle || area.title)}</a>`
       ).join("")}
@@ -174,6 +196,8 @@
         <p>Clique em uma área para ver as perguntas e respostas.</p>
       </section>
 
+      ${homeNoticeHighlight()}
+
       <section class="area-grid">
         ${areaList().map(area => `
           <a class="area-card area-${area.id}" href="#area/${area.id}">
@@ -188,6 +212,134 @@
         `).join("")}
       </section>
     `);
+  }
+
+
+  function homeNoticeHighlight() {
+    const avisos = noticeList();
+    if (!avisos.length) return "";
+    const aviso = avisos.find(item => item.destaque) || avisos[0];
+    return `<section class="notice-home-card" style="--notice-accent:${esc(cssColor(aviso.cor))}">
+      <div class="notice-home-copy">
+        <p class="kicker">Avisos e campanhas</p>
+        <h2>${esc(aviso.titulo)}</h2>
+        <p>${esc(aviso.resumo)}</p>
+        <a href="#avisos/${esc(aviso.id)}">Ver orientação ${icon("arrow")}</a>
+      </div>
+      <div class="notice-home-image">
+        <img src="${esc(aviso.imagem)}" alt="${esc(aviso.alt || aviso.titulo)}">
+      </div>
+    </section>`;
+  }
+
+  function noticeBadge(text) {
+    return text ? `<span class="notice-badge">${esc(text)}</span>` : "";
+  }
+
+  function renderNoticeCard(aviso) {
+    return `<article class="notice-card" style="--notice-accent:${esc(cssColor(aviso.cor))}">
+      <a class="notice-card-image" href="#avisos/${esc(aviso.id)}">
+        <img src="${esc(aviso.imagem)}" alt="${esc(aviso.alt || aviso.titulo)}">
+      </a>
+      <div class="notice-card-body">
+        <div class="notice-card-meta">
+          ${noticeBadge(aviso.categoria)}
+          ${noticeBadge(aviso.publico)}
+          ${noticeBadge(aviso.prioridade)}
+        </div>
+        <h2><a href="#avisos/${esc(aviso.id)}">${esc(aviso.titulo)}</a></h2>
+        <p>${esc(aviso.resumo)}</p>
+        <a class="notice-action" href="#avisos/${esc(aviso.id)}">Abrir conteúdo ${icon("arrow")}</a>
+      </div>
+    </article>`;
+  }
+
+  function renderNotices() {
+    const avisos = noticeList();
+    renderTopNavigation("", "avisos");
+    renderAreaTabs(null);
+    setBreadcrumb([{ label: "Início", route: "inicio" }, { label: "Avisos e Campanhas", route: "avisos" }]);
+
+    transition(`
+      <section class="notice-hero">
+        <div>
+          <p class="kicker">Avisos e campanhas</p>
+          <h1>Orientações importantes em destaque.</h1>
+          <p>Campanhas e avisos rápidos para facilitar a comunicação com cidadãos, empresas e serviços.</p>
+        </div>
+        <span class="notice-hero-icon">${icon("megaphone")}</span>
+      </section>
+
+      ${avisos.length ? `
+        <section class="notice-grid">
+          ${avisos.map(renderNoticeCard).join("")}
+        </section>` : `
+        <section class="empty-state">${icon("info")}<h1>Nenhum aviso ativo</h1><p>Cadastre os avisos no arquivo <strong>dados/avisos.js</strong>.</p></section>`}
+    `);
+  }
+
+  function renderNoticeDetail(noticeId) {
+    const aviso = noticeById(noticeId);
+    if (!aviso) return renderNotFound();
+
+    const gallery = Array.isArray(aviso.galeria) && aviso.galeria.length
+      ? aviso.galeria
+      : [{ imagem: aviso.imagem, alt: aviso.alt || aviso.titulo }];
+
+    renderTopNavigation("", "avisos");
+    renderAreaTabs(null);
+    setBreadcrumb([
+      { label: "Início", route: "inicio" },
+      { label: "Avisos e Campanhas", route: "avisos" },
+      { label: aviso.titulo, route: `avisos/${aviso.id}` }
+    ]);
+
+    transition(`
+      <article class="notice-detail" style="--notice-accent:${esc(cssColor(aviso.cor))}">
+        <div class="notice-detail-copy">
+          <p class="kicker">${esc(aviso.categoria || "Aviso")}</p>
+          <h1>${esc(aviso.titulo)}</h1>
+          <p class="notice-lead">${esc(aviso.textoPrincipal || aviso.resumo)}</p>
+          <div class="notice-card-meta">
+            ${noticeBadge(aviso.categoria)}
+            ${noticeBadge(aviso.publico)}
+            ${noticeBadge(aviso.prioridade)}
+          </div>
+          ${aviso.orientacoes?.length ? `
+            <section class="notice-steps">
+              <h2>${esc(aviso.orientacoesTitulo || "Orientação rápida")}</h2>
+              <ul>
+                ${aviso.orientacoes.map(item => `<li>${esc(item)}</li>`).join("")}
+              </ul>
+            </section>` : ""}
+          ${aviso.alerta ? `<p class="notice-warning">${icon("info")}<span>${esc(aviso.alerta)}</span></p>` : ""}
+          <a class="notice-back" href="#avisos">${icon("arrow")} Voltar para avisos</a>
+        </div>
+        <div class="notice-media-column">
+          <figure class="notice-detail-image">
+            <img src="${esc(gallery[0].imagem || aviso.imagem)}" alt="${esc(gallery[0].alt || aviso.alt || aviso.titulo)}">
+          </figure>
+          ${gallery.length > 1 ? `
+            <div class="notice-gallery">
+              ${gallery.slice(1).map(item => `
+                <figure class="notice-gallery-item">
+                  <img src="${esc(item.imagem)}" alt="${esc(item.alt || aviso.titulo)}">
+                </figure>
+              `).join("")}
+            </div>` : ""}
+        </div>
+      </article>
+    `);
+  }
+
+  function questionsOverviewCta(area) {
+    return `<aside class="questions-overview-cta">
+      <div>
+        <strong>Quer ver tudo de uma vez?</strong>
+        <span>Abra a lista completa para ter uma noção geral antes de escolher o tema.</span>
+      </div>
+      <a href="#area/${esc(area.id)}/perguntas">Ver todas as perguntas relacionadas ${icon("arrow")}</a>
+    </aside>`;
   }
 
   function renderArea(areaId) {
@@ -205,6 +357,7 @@
 
     transition(`
       ${pageHeader("Área de orientação", area.title, area.intro)}
+      ${questionsOverviewCta(area)}
 
       <section class="journey-grid">
         ${area.journeys.map(journey => `
@@ -241,10 +394,25 @@
       { label: "Perguntas", route: `area/${area.id}/perguntas` }
     ]);
 
+    const allAreaQuestions = allQuestionsFor(areaId);
+
     transition(`
-      ${pageHeader("Perguntas", "Perguntas e respostas", "Clique em um tema para ver as perguntas.")}
-      <section class="category-grid">
-        ${categoriesFor(areaId).map(category => categoryCard(area, category)).join("")}
+      ${pageHeader("Perguntas", "Todas as perguntas relacionadas", "Veja a lista geral primeiro ou desça para navegar por temas.")}
+      <section class="all-questions-panel">
+        <div class="section-heading compact-heading">
+          <div><p class="kicker">Visão geral</p><h2>${allAreaQuestions.length} perguntas reunidas</h2></div>
+          <a href="#area/${area.id}/temas">Ver por temas ${icon("arrow")}</a>
+        </div>
+        <div class="question-list all-questions-list">${allAreaQuestions.map(questionRow).join("")}</div>
+      </section>
+
+      <section class="content-section compact-section">
+        <div class="section-heading">
+          <div><p class="kicker">Organização</p><h2>Ver perguntas por tema</h2></div>
+        </div>
+        <section class="category-grid">
+          ${categoriesFor(areaId).map(category => categoryCard(area, category)).join("")}
+        </section>
       </section>
     `);
   }
@@ -263,6 +431,7 @@
 
     transition(`
       ${pageHeader("Temas", "Temas disponíveis", "Clique em um tema para ver as perguntas.")}
+      ${questionsOverviewCta(area)}
       <section class="category-grid">
         ${categoriesFor(areaId).map(category => categoryCard(area, category)).join("")}
       </section>
@@ -286,6 +455,7 @@
 
     transition(`
       ${pageHeader("Perguntas por assunto", journey.title, journey.description)}
+      ${questionsOverviewCta(area)}
       <section class="category-grid">
         ${categories.map(category => categoryCard(area, category)).join("")}
       </section>
@@ -324,6 +494,7 @@
 
     transition(`
       ${pageHeader(`${category.questions.length} itens`, category.title, category.description)}
+      ${questionsOverviewCta(area)}
       <div class="question-list">${sorted.map(item => questionRow({ area, category, question: item })).join("")}</div>
     `);
   }
@@ -497,6 +668,10 @@
     const parts = (location.hash.replace(/^#/, "") || "inicio").split("/").map(decodeURIComponent);
 
     if (parts[0] === "inicio") return renderHome();
+    if (parts[0] === "avisos") {
+      if (!parts[1]) return renderNotices();
+      return renderNoticeDetail(parts[1]);
+    }
 
     if (parts[0] === "area") {
       const areaId = parts[1];
