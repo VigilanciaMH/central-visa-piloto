@@ -50,7 +50,8 @@
     chevron: '<svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>',
     external: '<svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 13v7H4V6h7"/></svg>',
     info: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg>',
-    megaphone: '<svg viewBox="0 0 24 24"><path d="M4 13h4l10 5V6L8 11H4v2Z"/><path d="M8 13v5a2 2 0 0 0 2 2h1"/><path d="M20 9v6"/></svg>'
+    megaphone: '<svg viewBox="0 0 24 24"><path d="M4 13h4l10 5V6L8 11H4v2Z"/><path d="M8 13v5a2 2 0 0 0 2 2h1"/><path d="M20 9v6"/></svg>',
+    droplet: '<svg viewBox="0 0 24 24"><path d="M12 3s7 7.1 7 12a7 7 0 0 1-14 0c0-4.9 7-12 7-12Z"/><path d="M9 16a3 3 0 0 0 3 2.5"/></svg>'
   };
 
   const icon = (name, cls = "") =>
@@ -143,8 +144,9 @@
       officialNoticeLink.rel = "noopener noreferrer";
     }
     topNavigation.innerHTML = `
-      <a href="#inicio" class="${!activeAreaId && activePage !== "avisos" ? "active" : ""}">Início</a>
+      <a href="#inicio" class="${!activeAreaId && !activePage ? "active" : ""}">Início</a>
       <a href="#avisos" class="${activePage === "avisos" ? "active" : ""}">Avisos e Campanhas</a>
+      <a href="#agua" class="${activePage === "agua" ? "active" : ""}">Qualidade da Água</a>
       ${areaList().map(area =>
         `<a href="#area/${area.id}" class="${activeAreaId === area.id ? "active" : ""}">${esc(area.navTitle || area.title)}</a>`
       ).join("")}
@@ -190,67 +192,132 @@
     setBreadcrumb([{ label: "Início", route: "inicio" }]);
 
     transition(`
-      <section class="hero">
+      <section class="home-hero-refined">
         <p class="kicker">Dúvidas e respostas</p>
-        <h1>Escolha o assunto da sua dúvida.</h1>
-        <p>Clique em uma área para ver as perguntas e respostas.</p>
+        <h1>Encontre a orientação certa.</h1>
       </section>
 
       ${homeNoticeHighlight()}
 
-      <section class="area-grid">
-        ${areaList().map(area => `
-          <a class="area-card area-${area.id}" href="#area/${area.id}">
-            <span class="area-card-icon">${icon(area.icon)}</span>
-            <div>
-              <small>${area.questionCount} perguntas${area.supplementCount ? " + complementos" : ""}</small>
-              <h2>${esc(area.title)}</h2>
-              <p>${esc(area.summary)}</p>
-            </div>
-            ${icon("arrow", "arrow")}
-          </a>
-        `).join("")}
+      <section class="home-area-section">
+        <header class="home-section-title">
+          <p class="kicker">Áreas</p>
+          <h2>Escolha o assunto</h2>
+        </header>
+        <div class="area-grid">
+          ${areaList().map(area => `
+            <a class="area-card area-${area.id}" href="#area/${area.id}">
+              <span class="area-card-icon">${icon(area.icon)}</span>
+              <div>
+                <small>${area.questionCount} perguntas${area.supplementCount ? " + complementos" : ""}</small>
+                <h2>${esc(area.title)}</h2>
+                <p>${esc(area.summary)}</p>
+              </div>
+              ${icon("arrow", "arrow")}
+            </a>
+          `).join("")}
+        </div>
       </section>
     `);
+
+    setupHomeNoticeCarousel();
   }
 
 
   function homeNoticeHighlight() {
     const avisos = noticeList();
     if (!avisos.length) return "";
-    const aviso = avisos.find(item => item.destaque) || avisos[0];
+
     const total = avisos.length;
     const totalAvisos = avisos.filter(item => String(item.categoria || "").toLowerCase().includes("aviso")).length;
     const totalCampanhas = avisos.filter(item => String(item.categoria || "").toLowerCase().includes("campanha")).length;
-    const resumoContagem = `${totalAvisos} aviso${totalAvisos === 1 ? "" : "s"} e ${totalCampanhas} campanha${totalCampanhas === 1 ? "" : "s"} ativos`;
+    const resumoContagem = `${total} conteúdo${total === 1 ? "" : "s"} ativo${total === 1 ? "" : "s"}`;
 
-    return `<section class="notice-home-dashboard" aria-label="Resumo de avisos e campanhas">
-      <a class="notice-count-card" href="#avisos">
-        <span class="kicker">Avisos e campanhas</span>
-        <strong>${total}</strong>
-        <p>${esc(resumoContagem)} na central.</p>
-        <small>Ver todos ${icon("arrow")}</small>
-      </a>
-      <aside class="notice-alert-card">
-        <span class="notice-alert-icon">${icon("info")}</span>
-        <div>
-          <strong>Atenção aos comunicados</strong>
-          <p>Confira os avisos antes de orientar o descarte, divulgar campanhas ou repassar informações ao público.</p>
+    return `<section class="home-notice-block" aria-label="Avisos e campanhas">
+      <div class="home-notice-topline">
+        <a class="home-count-pill" href="#avisos" aria-label="${esc(resumoContagem)} em avisos e campanhas">
+          <strong>${total}</strong>
+          <span>${esc(resumoContagem)}</span>
+        </a>
+        <span>${totalAvisos} aviso${totalAvisos === 1 ? "" : "s"}</span>
+        <span>${totalCampanhas} campanha${totalCampanhas === 1 ? "" : "s"}</span>
+        <aside class="home-alert-pill">
+          ${icon("info")}
+          <span>Novos conteúdos aparecem aqui.</span>
+        </aside>
+      </div>
+
+      <section class="home-carousel-shell" aria-label="Carrossel de avisos e campanhas">
+        <div class="home-carousel-track" id="homeNoticeCarousel">
+          ${avisos.map((aviso, index) => `
+            <article class="home-slide" style="--notice-accent:${esc(cssColor(aviso.cor))}" aria-label="${esc(aviso.titulo)}">
+              <div class="home-slide-copy">
+                <span class="notice-badge">${esc(aviso.categoria || "Aviso")}</span>
+                <h2>${esc(aviso.titulo)}</h2>
+                <p>${esc(aviso.resumo)}</p>
+                <a href="#avisos/${esc(aviso.id)}">Abrir conteúdo ${icon("arrow")}</a>
+              </div>
+              <div class="home-slide-media">
+                <figure class="home-image-frame">
+                  <img src="${esc(aviso.imagem)}" alt="${esc(aviso.alt || aviso.titulo)}">
+                </figure>
+              </div>
+            </article>
+          `).join("")}
         </div>
-      </aside>
-    </section>
 
-    <section class="notice-home-card" style="--notice-accent:${esc(cssColor(aviso.cor))}">
-      <div class="notice-home-copy">
-        <p class="kicker">Em destaque</p>
-        <h2>${esc(aviso.titulo)}</h2>
-        <p>${esc(aviso.resumo)}</p>
-        <a href="#avisos/${esc(aviso.id)}">Ver orientação ${icon("arrow")}</a>
-      </div>
-      <div class="notice-home-image">
-        <img src="${esc(aviso.imagem)}" alt="${esc(aviso.alt || aviso.titulo)}">
-      </div>
+        ${avisos.length > 1 ? `
+          <div class="home-carousel-controls">
+            <div class="home-carousel-dots" id="homeNoticeDots" aria-label="Selecionar conteúdo">
+              ${avisos.map((_, index) => `<button class="home-carousel-dot ${index === 0 ? "active" : ""}" type="button" aria-label="Ir para conteúdo ${index + 1}"></button>`).join("")}
+            </div>
+            <div class="home-carousel-arrows">
+              <button class="home-carousel-arrow" id="homeNoticePrev" type="button" aria-label="Anterior">‹</button>
+              <button class="home-carousel-arrow" id="homeNoticeNext" type="button" aria-label="Próximo">›</button>
+            </div>
+          </div>` : ""}
+      </section>
     </section>`;
+  }
+
+  function setupHomeNoticeCarousel() {
+    const track = document.getElementById("homeNoticeCarousel");
+    if (!track) return;
+
+    const dots = Array.from(document.querySelectorAll(".home-carousel-dot"));
+    const total = track.children.length;
+    if (total <= 1) return;
+
+    const prev = document.getElementById("homeNoticePrev");
+    const next = document.getElementById("homeNoticeNext");
+    const shell = track.closest(".home-carousel-shell");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let current = 0;
+    let timer = null;
+
+    function goTo(index) {
+      current = (index + total) % total;
+      track.style.transform = `translateX(${current * -100}%)`;
+      dots.forEach((dot, i) => dot.classList.toggle("active", i === current));
+    }
+
+    function stop() {
+      if (timer) window.clearInterval(timer);
+    }
+
+    function start() {
+      if (reduceMotion) return;
+      stop();
+      timer = window.setInterval(() => goTo(current + 1), 5600);
+    }
+
+    prev?.addEventListener("click", () => { goTo(current - 1); start(); });
+    next?.addEventListener("click", () => { goTo(current + 1); start(); });
+    dots.forEach((dot, index) => dot.addEventListener("click", () => { goTo(index); start(); }));
+    shell?.addEventListener("mouseenter", stop);
+    shell?.addEventListener("mouseleave", start);
+
+    start();
   }
 
   function noticeBadge(text) {
@@ -361,6 +428,29 @@
       </div>
       <a href="#area/${esc(area.id)}/perguntas">Ver todas as perguntas relacionadas ${icon("arrow")}</a>
     </aside>`;
+  }
+
+  function renderWaterQuality() {
+    renderTopNavigation("", "agua");
+    renderAreaTabs(null);
+    setBreadcrumb([{ label: "Início", route: "inicio" }, { label: "Qualidade da Água", route: "agua" }]);
+
+    transition(`
+      <section class="water-construction" aria-label="Página em Construção">
+        <div class="water-ripple" aria-hidden="true"></div>
+        <div class="water-wave" aria-hidden="true"></div>
+        <div class="water-content">
+          <span class="water-icon">${icon("droplet")}</span>
+          <h1>Página em Construção</h1>
+        </div>
+        <div class="water-visual-grid" aria-hidden="true">
+          <div class="water-stat-card"><span></span><strong></strong></div>
+          <div class="water-chart-card water-bars"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="water-chart-card water-ring"><i></i></div>
+          <div class="water-chart-card water-line"><i></i></div>
+        </div>
+      </section>
+    `);
   }
 
   function renderArea(areaId) {
@@ -689,6 +779,7 @@
     const parts = (location.hash.replace(/^#/, "") || "inicio").split("/").map(decodeURIComponent);
 
     if (parts[0] === "inicio") return renderHome();
+    if (parts[0] === "agua") return renderWaterQuality();
     if (parts[0] === "avisos") {
       if (!parts[1]) return renderNotices();
       return renderNoticeDetail(parts[1]);
