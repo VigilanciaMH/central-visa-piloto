@@ -435,24 +435,428 @@
     renderAreaTabs(null);
     setBreadcrumb([{ label: "Início", route: "inicio" }, { label: "Qualidade da Água", route: "agua" }]);
 
+    const agua = window.VISA_AGUA || { bairros: [] };
+    const bairros = agua.bairros || [];
+    const selected = bairros.find(item => item.id === "01") || bairros[0];
+    const statusLabels = {
+      concluido: "Última coleta concluída",
+      "coleta-analise": "Última coleta em análise",
+      "recoleta-andamento": "Recoleta em andamento"
+    };
+    const areasNoMapa = bairros.filter(item => item.noMapa);
+    const areasForaDoMapa = bairros.filter(item => !item.noMapa);
+    const totalAnalises = bairros.reduce((sum, item) => sum + (Number(item.analises) || 0), 0);
+    const totalSatisfatorias = bairros.reduce((sum, item) => sum + ((Number(item.analises) || 0) * ((Number(item.satisfatorias) || 0) / 100)), 0);
+    const totalPendenciasTecnicas = bairros.filter(item => item.status === "coleta-analise" || item.status === "recoleta-andamento").length;
+    const conformidadeGeral = totalAnalises ? (totalSatisfatorias / totalAnalises) * 100 : 0;
+
     transition(`
-      <section class="water-construction" aria-label="Página em Construção">
-        <div class="water-ripple" aria-hidden="true"></div>
-        <div class="water-wave" aria-hidden="true"></div>
-        <div class="water-content">
-          <span class="water-icon">${icon("droplet")}</span>
-          <h1>Página em Construção</h1>
+      <section class="water-dashboard" aria-label="Painel de qualidade da água por bairro">
+        <header class="water-dashboard-head">
+          <div class="water-title-block">
+            <span class="water-title-icon">${icon("droplet")}</span>
+            <div>
+              <p class="kicker">SAA Maravilha</p>
+              <h1><span>Qualidade da Água</span> <span>por Bairro</span></h1>
+              <p>Clique no mapa ou escolha uma área para ver a última coleta, o histórico geral e a evolução anual.</p>
+            </div>
+          </div>
+          <div class="water-head-actions">
+            <label class="water-search">
+              ${icon("search")}
+              <input id="waterNeighborhoodSearch" type="search" placeholder="Buscar bairro" autocomplete="off">
+            </label>
+            <span class="water-update">Atualizado em <strong>${esc(agua.atualizadoEm || "Jul/2026")}</strong></span>
+          </div>
+        </header>
+
+        <div class="water-system-tabs" role="tablist" aria-label="Sistemas de abastecimento">
+          <button class="active" type="button" role="tab" aria-selected="true" data-water-tab="saa">SAA</button>
+          <button type="button" role="tab" aria-selected="false" data-water-tab="sac">SAC em breve</button>
+          <button type="button" role="tab" aria-selected="false" data-water-tab="sai">SAI em breve</button>
         </div>
-        <div class="water-visual-grid" aria-hidden="true">
-          <div class="water-stat-card"><span></span><strong></strong></div>
-          <div class="water-chart-card water-bars"><i></i><i></i><i></i><i></i><i></i></div>
-          <div class="water-chart-card water-ring"><i></i></div>
-          <div class="water-chart-card water-line"><i></i></div>
+
+        <div class="water-system-panel active" data-water-panel="saa">
+        <div id="waterEducationModal" class="water-education-modal" role="dialog" aria-modal="true" aria-labelledby="waterEducationTitle">
+          <div class="water-education-card">
+            <button id="waterEducationClose" class="water-education-close" type="button" aria-label="Fechar explicação">×</button>
+            <p class="kicker">Antes de consultar</p>
+            <h2 id="waterEducationTitle">Como ler os indicadores da água</h2>
+            <p>Os percentuais mostram quantas coletas ficaram dentro do padrão analisado no período. Uma coleta em análise ainda não é resultado ruim nem bom: significa que o laudo mais recente ainda está sendo concluído. Quando aparecer recoleta em andamento, a área fica em amarelo para indicar acompanhamento técnico até a nova verificação.</p>
+            <div class="water-education-grid">
+              <div><strong>Cloro no padrão</strong><span>Indica se o cloro residual ficou na faixa esperada para ajudar na desinfecção da água.</span></div>
+              <div><strong>pH no padrão</strong><span>Mostra se a água está dentro da faixa adequada de acidez/alcalinidade.</span></div>
+              <div><strong>Coliformes</strong><span>O padrão esperado é ausência. Presença exige avaliação técnica e providências.</span></div>
+              <div><strong>Turbidez</strong><span>Indica a clareza da água. Valores fora do padrão pedem acompanhamento.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="water-status-legend" aria-label="Legenda de status">
+          ${Object.entries(statusLabels).map(([key, label]) => `<span><i class="water-dot status-${key}"></i>${esc(label)}</span>`).join("")}
+        </div>
+
+        <div class="water-layout">
+          <section class="water-map-card" aria-label="Mapa interativo dos bairros">
+            <div class="water-map-toolbar" aria-label="Controles do mapa">
+              <button class="water-tool" type="button" data-water-zoom="in" aria-label="Aproximar">+</button>
+              <button class="water-tool" type="button" data-water-zoom="out" aria-label="Afastar">−</button>
+              <button class="water-tool" type="button" data-water-reset aria-label="Centralizar">⌖</button>
+            </div>
+            <div id="waterMapStage" class="water-map-stage">
+              <div class="water-map-canvas">
+                <div id="waterMapOverlay" class="water-map-overlay"><div class="water-map-loading">${icon("droplet")} Carregando mapa dos bairros...</div></div>
+              </div>
+            </div>
+          </section>
+
+          <aside id="waterDetails" class="water-details" aria-live="polite">
+            ${waterDetailsMarkup(selected, statusLabels)}
+          </aside>
+        </div>
+
+        <section class="water-bottom-grid">
+          <div class="water-neighborhoods">
+            <div class="water-section-title">
+              <div>
+                <p class="kicker">Bairros monitorados</p>
+                <h2>${areasNoMapa.length} bairros presentes no mapa + ${areasForaDoMapa.length} locais abastecidos pela SAA</h2>
+              </div>
+              <span>Toque para selecionar</span>
+            </div>
+            <div id="waterNeighborhoodList" class="water-neighborhood-list">
+              ${bairros.map(item => `
+                <button type="button" class="water-neighborhood-chip ${item.id === selected?.id ? "active" : ""}" data-water-id="${esc(item.id)}">
+                  <i class="water-dot status-${esc(item.status)}"></i>
+                  <span>${esc(item.nome)}</span>${item.noMapa ? "" : "<em>local SAA</em>"}
+                </button>
+              `).join("")}
+            </div>
+          </div>
+
+          <aside class="water-summary">
+            <p class="kicker">Resumo do município</p>
+            <div class="water-summary-grid">
+              <div><span>${icon("shield")}</span><small>Conformidade geral</small><strong>${conformidadeGeral.toFixed(1).replace(".", ",")}%</strong></div>
+              <div><span>${icon("layout")}</span><small>Áreas monitoradas</small><strong>${bairros.length}</strong></div>
+              <div><span>${icon("info")}</span><small>Em análise/recoleta</small><strong>${totalPendenciasTecnicas}</strong></div>
+            </div>
+            <p class="water-source-note">${esc(agua.fonte || "")}</p>
+          </aside>
+        </section>
+
+        <section class="water-analysis" aria-label="Consulta detalhada dos dados de qualidade da água">
+          <div class="water-analysis-head">
+            <div>
+              <p class="kicker">Consultar histórico</p>
+              <h2>Pesquise uma área e veja os gráficos</h2>
+            </div>
+            <form id="waterAnalysisForm" class="water-analysis-form">
+              <select id="waterAnalysisSelect" aria-label="Selecionar bairro ou local">
+                ${bairros.map(item => `<option value="${esc(item.id)}" ${item.id === selected?.id ? "selected" : ""}>${esc(item.nome)}</option>`).join("")}
+              </select>
+              <button type="submit">Pesquisar</button>
+            </form>
+          </div>
+          <div id="waterAnalysisResult" class="water-analysis-result">
+            ${waterAnalysisMarkup(selected)}
+          </div>
+        </section>
+        </div>
+
+        <div class="water-system-panel" data-water-panel="sac">
+          ${waterPreviewPanel("sac")}
+        </div>
+
+        <div class="water-system-panel" data-water-panel="sai">
+          ${waterPreviewPanel("sai")}
         </div>
       </section>
     `);
+
+    setupWaterDashboard(bairros, statusLabels);
   }
 
+  function waterPreviewPanel(type) {
+    const isSac = type === "sac";
+    const title = isSac ? "Soluções Alternativas Coletivas" : "Soluções Alternativas Individuais";
+    const tag = isSac ? "SAC" : "SAI";
+    const subtitle = isSac
+      ? "Prévia dos indicadores para pontos coletivos em construção."
+      : "Prévia dos indicadores para pontos individuais em construção.";
+    const cards = isSac
+      ? [["Pontos cadastrados", "12"], ["Coletas previstas", "28"], ["Painéis planejados", "4"]]
+      : [["Imóveis referência", "36"], ["Coletas previstas", "18"], ["Painéis planejados", "3"]];
+    const bars = isSac ? [72, 88, 64, 91, 78] : [58, 74, 69, 82, 76];
+
+    return `
+      <section class="water-preview water-preview-${type}" aria-label="Prévia ${tag}">
+        <div class="water-preview-copy">
+          <p class="kicker">${tag} em construção</p>
+          <h2>${title}</h2>
+          <p>${subtitle} Esta área já está desenhada para receber dados mensais da planilha oficial.</p>
+        </div>
+        <div class="water-preview-grid">
+          ${cards.map(([label, value]) => `
+            <article class="water-preview-card">
+              <span>${icon("layout")}</span>
+              <small>${esc(label)}</small>
+              <strong>${esc(value)}</strong>
+            </article>
+          `).join("")}
+        </div>
+        <div class="water-preview-chart">
+          <div>
+            <strong>Gostinho do painel</strong>
+            <small>Modelo visual para evolução mensal</small>
+          </div>
+          <div class="water-bars" aria-hidden="true">
+            ${bars.map((bar, index) => `<i style="--bar:${bar}%; --delay:${index}"></i>`).join("")}
+          </div>
+        </div>
+      </section>
+    `;
+  }
+  function waterDetailsMarkup(item, statusLabels) {
+    if (!item) {
+      return `<div class="water-empty-details">${icon("info")}<h2>Nenhum bairro encontrado</h2><p>Ajuste a busca ou revise a base de dados.</p></div>`;
+    }
+    const parametros = item.parametros || {};
+    const gaugeSat = Math.max(0, Math.min(100, Number(item.satisfatorias) || 0));
+    const gaugeInsat = Math.max(0, Math.min(100, Number(item.insatisfatorias) || 0));
+    const gaugeOutros = Math.max(0, Math.min(100, Number(item.naoRegistrado) || 0));
+    return `
+      <div class="water-details-head">
+        <div>
+          <span class="water-status-pill status-${esc(item.status)}">${esc(statusLabels[item.status] || item.status)}</span>
+          <h2>${esc(item.nome)}</h2>
+        </div>
+        <strong>${formatWaterPercent(item.satisfatorias)}</strong>
+      </div>
+      <div class="water-last-sample">
+        <small>Última coleta registrada</small>
+        <strong>${esc(item.ultimaColeta || "Não informado")}</strong>
+        <span>${esc(item.situacaoUltimaColeta || "Não informado")}</span>
+      </div>
+      <p class="water-details-summary">${esc(item.resumo)}</p>
+      <div class="water-gauge" aria-label="Distribuição geral dos resultados de 2014 a 2026">
+        <div class="water-gauge-bar">
+          <i class="gauge-sat" style="width:${gaugeSat}%"></i>
+          <i class="gauge-insat" style="width:${gaugeInsat}%"></i>
+          <i class="gauge-other" style="width:${gaugeOutros}%"></i>
+        </div>
+        <div class="water-gauge-legend">
+          <span><i class="gauge-sat"></i>Satisfatória ${formatWaterPercent(item.satisfatorias)}</span>
+          <span><i class="gauge-insat"></i>Insatisfatória ${formatWaterPercent(item.insatisfatorias)}</span>
+          <span><i class="gauge-other"></i>Outros ${formatWaterPercent(item.naoRegistrado)}</span>
+        </div>
+      </div>
+      <div class="water-metrics">
+        <div><small>Coletas no histórico</small><strong>${item.analises}</strong></div>
+        <div><small>Satisfatórias no histórico</small><strong>${formatWaterPercent(item.satisfatorias)}</strong></div>
+        <div><small>Insatisfatórias no histórico</small><strong>${formatWaterPercent(item.insatisfatorias)}</strong></div>
+        <div><small>Representação</small><strong>${item.noMapa ? "Bairro no mapa" : "Local SAA"}</strong></div>
+      </div>
+    `;
+  }
+
+  function formatWaterPercent(value) {
+    const number = Number(value) || 0;
+    return `${number.toFixed(2).replace(".", ",")}%`;
+  }
+
+  function waterAnnualChart(item) {
+    const historico = (item.historicoAnual || []).filter(row => Number(row.coletas) > 0);
+    if (!historico.length) {
+      return `<div class="water-chart"><div class="water-chart-title"><strong>Evolução anual</strong><span>sem dados</span></div></div>`;
+    }
+    const points = historico.map((row, index) => {
+      const x = historico.length === 1 ? 50 : (index / (historico.length - 1)) * 100;
+      const y = 58 - ((Math.max(0, Math.min(100, Number(row.satisfatorias) || 0)) / 100) * 52);
+      return `${x.toFixed(2)},${y.toFixed(2)}`;
+    }).join(" ");
+    return `
+      <div class="water-chart">
+        <div class="water-chart-title"><strong>Evolução anual das satisfatórias</strong><span>%</span></div>
+        <svg viewBox="0 0 100 64" role="img" aria-label="Evolução anual de análises satisfatórias">
+          <path class="water-chart-grid" d="M0 6H100M0 32H100M0 58H100"/>
+          <polyline class="water-chart-line" points="${esc(points)}"/>
+          ${historico.map((row, index) => {
+            const x = historico.length === 1 ? 50 : (index / (historico.length - 1)) * 100;
+            const y = 58 - ((Math.max(0, Math.min(100, Number(row.satisfatorias) || 0)) / 100) * 52);
+            return `<circle class="water-chart-point" cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="1.8"><title>${esc(row.ano)}: ${formatWaterPercent(row.satisfatorias)} em ${row.coletas} coletas</title></circle>`;
+          }).join("")}
+        </svg>
+        <div class="water-chart-months">${historico.map(row => `<span>${esc(row.ano)}</span>`).join("")}</div>
+      </div>
+    `;
+  }
+
+  function waterAnalysisMarkup(item) {
+    if (!item) {
+      return `<div class="water-analysis-empty">${icon("info")} Selecione uma área para ver os gráficos.</div>`;
+    }
+    const parametros = Object.values(item.parametros || {});
+    const historico = (item.historicoAnual || []).filter(row => Number(row.coletas) > 0);
+    return `
+      <div class="water-analysis-title">
+        <div>
+          <p class="kicker">Área selecionada</p>
+          <h3>${esc(item.nome)}</h3>
+        </div>
+        <span>${esc(item.ultimaColeta || "Sem data")} · ${esc(item.situacaoUltimaColeta || "Não informado")}</span>
+      </div>
+      <div class="water-analysis-grid">
+        <article class="water-analysis-card wide">
+          <div class="water-chart-title"><strong>Satisfatórias por ano</strong><span>2014-2026</span></div>
+          <div class="water-annual-bars">
+            ${historico.map(row => `
+              <div>
+                <i style="height:${Math.max(4, Math.min(100, Number(row.satisfatorias) || 0))}%"></i>
+                <strong>${formatWaterPercent(row.satisfatorias)}</strong>
+                <span>${esc(row.ano)}</span>
+              </div>
+            `).join("")}
+          </div>
+        </article>
+        <article class="water-analysis-card">
+          <div class="water-chart-title"><strong>Resultado geral</strong><span>${esc(item.analises)} coletas</span></div>
+          <div class="water-result-bars">
+            <div><span>Satisfatória</span><i><b class="gauge-sat" style="width:${Math.max(0, Math.min(100, Number(item.satisfatorias) || 0))}%"></b></i><strong>${formatWaterPercent(item.satisfatorias)}</strong></div>
+            <div><span>Insatisfatória</span><i><b class="gauge-insat" style="width:${Math.max(0, Math.min(100, Number(item.insatisfatorias) || 0))}%"></b></i><strong>${formatWaterPercent(item.insatisfatorias)}</strong></div>
+            <div><span>Outros</span><i><b class="gauge-other" style="width:${Math.max(0, Math.min(100, Number(item.naoRegistrado) || 0))}%"></b></i><strong>${formatWaterPercent(item.naoRegistrado)}</strong></div>
+          </div>
+        </article>
+        <article class="water-analysis-card">
+          <div class="water-chart-title"><strong>Parâmetros no padrão</strong><span>%</span></div>
+          <div class="water-parameter-bars">
+            ${parametros.map(parametro => `
+              <div>
+                <span>${esc(parametro.label)}</span>
+                <i><b style="width:${Math.max(0, Math.min(100, Number(parametro.valor) || 0))}%"></b></i>
+                <strong>${formatWaterPercent(parametro.valor)}</strong>
+              </div>
+            `).join("")}
+          </div>
+        </article>
+      </div>
+    `;
+  }
+
+  function setupWaterDashboard(bairros, statusLabels) {
+    const stage = document.getElementById("waterMapStage");
+    const details = document.getElementById("waterDetails");
+    const list = document.getElementById("waterNeighborhoodList");
+    const search = document.getElementById("waterNeighborhoodSearch");
+    const analysisForm = document.getElementById("waterAnalysisForm");
+    const analysisSelect = document.getElementById("waterAnalysisSelect");
+    const analysisResult = document.getElementById("waterAnalysisResult");
+    const educationModal = document.getElementById("waterEducationModal");
+    const educationClose = document.getElementById("waterEducationClose");
+    const byId = new Map(bairros.map(item => [item.id, item]));
+    let activeId = bairros[0]?.id || "";
+    let zoom = 1;
+
+    function select(id) {
+      const item = byId.get(id);
+      if (!item) return;
+      activeId = id;
+      details.innerHTML = waterDetailsMarkup(item, statusLabels);
+      if (analysisSelect) analysisSelect.value = id;
+      list.querySelectorAll("[data-water-id]").forEach(button => button.classList.toggle("active", button.dataset.waterId === id));
+      stage.querySelectorAll(".bairro-exato").forEach(area => area.classList.toggle("selecionado", area.dataset.id === id));
+      stage.querySelectorAll(".map-label").forEach(label => label.classList.toggle("active", label.dataset.labelId === id));
+    }
+
+    function decorateMap(root) {
+      root.querySelectorAll("script,style,#painel-bairro-exato,#tooltip-bairro-exato").forEach(node => node.remove());
+      const svg = root.querySelector("svg");
+      if (svg) {
+        svg.removeAttribute("width");
+        svg.removeAttribute("height");
+        svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+        svg.classList.add("water-real-map");
+      }
+      root.querySelectorAll(".bairro-exato").forEach(area => {
+        const item = byId.get(area.dataset.id);
+        if (!item) return;
+        area.classList.add(`status-${item.status}`);
+        area.setAttribute("role", "button");
+        area.setAttribute("tabindex", "0");
+        area.setAttribute("aria-label", `Selecionar ${item.nome}`);
+        area.addEventListener("click", () => select(item.id));
+        area.addEventListener("mouseenter", () => select(item.id));
+        area.addEventListener("keydown", event => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            select(item.id);
+          }
+        });
+      });
+      select(activeId || bairros[0]?.id);
+    }
+
+    fetch("assets/images/mapa-bairros-saa.svg")
+      .then(response => response.text())
+      .then(svgText => {
+        const overlay = document.getElementById("waterMapOverlay");
+        overlay.innerHTML = svgText;
+        decorateMap(overlay);
+      })
+      .catch(() => {
+        document.getElementById("waterMapOverlay").innerHTML = `<div class="water-map-loading">${icon("info")} Não foi possível carregar os bairros. Verifique o arquivo SVG.</div>`;
+      });
+
+    list.addEventListener("click", event => {
+      const button = event.target.closest("[data-water-id]");
+      if (button) select(button.dataset.waterId);
+    });
+
+    search.addEventListener("input", () => {
+      const term = normalize(search.value);
+      list.querySelectorAll("[data-water-id]").forEach(button => {
+        const item = byId.get(button.dataset.waterId);
+        button.hidden = item && term ? !normalize(item.nome).includes(term) : false;
+      });
+    });
+
+    analysisForm?.addEventListener("submit", event => {
+      event.preventDefault();
+      const item = byId.get(analysisSelect.value);
+      if (!item) return;
+      analysisResult.innerHTML = waterAnalysisMarkup(item);
+      select(item.id);
+    });
+
+    educationClose?.addEventListener("click", () => {
+      educationModal?.classList.add("hidden");
+    });
+
+    document.querySelectorAll("[data-water-zoom]").forEach(button => {
+      button.addEventListener("click", () => {
+        zoom = button.dataset.waterZoom === "in" ? Math.min(1.55, zoom + .12) : Math.max(.82, zoom - .12);
+        stage.style.setProperty("--water-zoom", zoom);
+      });
+    });
+    document.querySelector("[data-water-reset]")?.addEventListener("click", () => {
+      zoom = 1;
+      stage.style.setProperty("--water-zoom", zoom);
+    });
+
+    document.querySelectorAll("[data-water-tab]").forEach(button => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.waterTab;
+        document.querySelectorAll("[data-water-tab]").forEach(tab => {
+          const active = tab.dataset.waterTab === target;
+          tab.classList.toggle("active", active);
+          tab.setAttribute("aria-selected", active ? "true" : "false");
+        });
+        document.querySelectorAll("[data-water-panel]").forEach(panel => {
+          panel.classList.toggle("active", panel.dataset.waterPanel === target);
+        });
+      });
+    });
+  }
   function renderArea(areaId) {
     const area = data.areas[areaId];
     if (!area) return renderNotFound();
