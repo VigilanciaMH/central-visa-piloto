@@ -1,6 +1,6 @@
 window.VISA_CONFIG = {
-  title: "Dúvidas e Respostas da Vigilância Sanitária de Maravilha/SC",
-  shortTitle: "Dúvidas e Respostas",
+  title: "Portal de Orientação Sanitária de Maravilha/SC",
+  shortTitle: "Portal de Orientação Sanitária",
   updated: "Junho de 2026",
   notice: "As normas podem mudar. Abra as fontes oficiais e confirme a regra atual antes de tomar uma decisão.",
   areaOrder: ["alimentacao", "saude", "interesse-saude", "produtos", "cidadao"],

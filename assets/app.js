@@ -8,6 +8,8 @@
   const breadcrumb = document.getElementById("breadcrumb");
   const areaTabs = document.getElementById("areaTabs");
   const topNavigation = document.getElementById("topNavigation");
+  const portalModeSwitcher = document.getElementById("portalModeSwitcher");
+  const portalContextBar = document.getElementById("portalContextBar");
   const searchButton = document.getElementById("searchButton");
   const searchDialog = document.getElementById("searchDialog");
   const searchInput = document.getElementById("searchInput");
@@ -61,6 +63,495 @@
     root.querySelectorAll("[data-icon]").forEach(el => {
       el.innerHTML = icon(el.dataset.icon);
     });
+  }
+
+  const PORTAL_MODES = {
+    cidadao: {
+      id: "cidadao",
+      label: "Área do Cidadão",
+      shortLabel: "Cidadão",
+      kicker: "",
+      title: "",
+      description: "",
+      searchPlaceholder: "Pesquise uma dúvida, atividade ou procedimento",
+      quickLinks: []
+    },
+    contador: {
+      id: "contador",
+      label: "Área do Contador",
+      shortLabel: "Contador",
+      kicker: "Ambiente técnico",
+      title: "Área do Contador",
+      description: "Orientação técnica para enquadramento sanitário, protocolos e organização documental de clientes.",
+      searchPlaceholder: "Pesquise alvará, protocolo, documentação ou enquadramento",
+      quickLinks: []
+    },
+    empresa: {
+      id: "empresa",
+      label: "Área da Empresa",
+      shortLabel: "Empresa",
+      kicker: "Ambiente empresarial",
+      title: "Área da Empresa",
+      description: "Orientação sanitária para alvará, inspeção, documentação e conformidade do estabelecimento.",
+      searchPlaceholder: "Pesquise alvará, inspeção, documentos ou conformidade",
+      quickLinks: []
+    }
+  };
+
+  const CONTADOR_BETHA_DOCUMENTOS = [
+    "Alvará Sanitário para Academias",
+    "Alvará Sanitário para Serviços de Ótica",
+    "Alvará Sanitário para Serviços Odontológicos",
+    "Exumação – translado",
+    "Habite-se Sanitário"
+  ];
+
+  const OFFICIAL_VISA_URL = "https://maravilha.sc.gov.br/vigilancia-sanitaria/";
+
+  const CONTADOR_FAQ_BLOCKS = [
+    {
+      "title": "Finalidade da Área do Contador",
+      "description": "Papel da área, limites da orientação e importância da contabilidade.",
+      "icon": "shield",
+      "questions": [
+        {
+          "n": 1,
+          "q": "Para que serve a Área do Contador?",
+          "a": "Serve para orientar profissionais da contabilidade sobre os principais cuidados antes de abrir, alterar, regularizar ou protocolar empresas sujeitas a Vigilância Sanitária. A proposta é reduzir dúvidas, evitar retrabalho e melhorar a comunicação entre contabilidade, empresa e setor público."
+        },
+        {
+          "n": 2,
+          "q": "A Área do Contador substitui o atendimento da Vigilância Sanitária?",
+          "a": "Não. Ela organiza orientações gerais e ajuda na preparação dos protocolos, mas situações concretas podem exigir análise individual da Vigilância Sanitária."
+        },
+        {
+          "n": 3,
+          "q": "Por que a contabilidade é importante no processo sanitário?",
+          "a": "Porque muitas informações usadas pela Vigilância Sanitária começam no cadastro da empresa, especialmente CNAE, endereço, atividade declarada, natureza do serviço e alterações contratuais. Quando esses dados não representam a atividade real, o processo pode ser atrasado ou exigir correção."
+        },
+        {
+          "n": 4,
+          "q": "A Vigilância Sanitária analisa apenas o CNAE?",
+          "a": "Não. O CNAE é uma informação importante, mas a análise também considera a atividade efetivamente exercida, o risco sanitário, a estrutura física, os produtos ou serviços oferecidos e a legislação aplicável."
+        },
+        {
+          "n": 5,
+          "q": "Uma empresa pode ter CNAE de baixo risco e mesmo assim precisar de análise?",
+          "a": "Sim. Dependendo da atividade real, da forma de operação, do local, do público atendido ou dos produtos envolvidos, pode ser necessária avaliação da Vigilância Sanitária."
+        }
+      ]
+    },
+    {
+      "title": "Abertura e consulta prévia",
+      "description": "Cuidados antes da abertura e início da operação.",
+      "icon": "building",
+      "questions": [
+        {
+          "n": 6,
+          "q": "O contador deve orientar o cliente a procurar a Vigilância antes de abrir a empresa?",
+          "a": "Sim, especialmente quando a atividade envolver alimentos, saúde, estetica, medicamentos, produtos de interesse a saúde, saneantes, serviços veterinarios, educacao, assistencia, hospedagem ou outras atividades com possível risco sanitário. A consulta prévia evita investimento em local ou estrutura incompatível com a atividade pretendida."
+        },
+        {
+          "n": 7,
+          "q": "Toda empresa precisa de Alvará Sanitário?",
+          "a": "Não necessariamente. A exigência depende da atividade, do CNAE, da classificação de risco e das normas vigentes. Algumas atividades podem ter tratamento simplificado ou dispensa de emissão do alvará sanitário, mas isso não significa dispensa de cumprir as normas sanitárias."
+        },
+        {
+          "n": 8,
+          "q": "MEI precisa de Alvará Sanitário?",
+          "a": "Depende da atividade. Ser MEI não elimina automaticamente as exigências sanitárias. O enquadramento deve considerar o que a pessoa realmente faz, onde faz, como faz e qual risco a atividade pode gerar."
+        },
+        {
+          "n": 9,
+          "q": "A empresa pode iniciar as atividades antes da liberação sanitária?",
+          "a": "Depende do enquadramento da atividade e do procedimento aplicável. Em atividades sujeitas a autorizacao sanitária, iniciar sem a liberação necessária pode gerar irregularidade e medidas administrativas. Na dúvida, o correto e consultar a Vigilância Sanitária antes do início da operação."
+        },
+        {
+          "n": 10,
+          "q": "O endereço da empresa interfere na análise sanitária?",
+          "a": "Sim. O endereço interfere porque a Vigilância Sanitária pode precisar avaliar estrutura física, acesso, fluxo, água, esgoto, ventilação, áreas de manipulação, armazenamento, atendimento ao público e compatibilidade da atividade com o local."
+        }
+      ]
+    },
+    {
+      "title": "CNAE, atividade real e enquadramento",
+      "description": "Coerência entre cadastro, objeto social e atividade efetivamente exercida.",
+      "icon": "layout",
+      "questions": [
+        {
+          "n": 11,
+          "q": "O que deve ser observado ao escolher o CNAE?",
+          "a": "O CNAE deve representar, com fidelidade, a atividade que a empresa realmente exerce ou pretende exercer. A Vigilância Sanitária não escolhe nem define os CNAEs da empresa. Porém, os CNAEs informados servem como uma das bases para análise do risco sanitário, da documentação necessária e do procedimento aplicável. Por isso, a escolha incorreta de CNAE pode gerar exigências incompatíveis, ausência de exigências necessárias, atraso no processo ou necessidade de adequacao cadastral."
+        },
+        {
+          "n": 12,
+          "q": "O CNAE secundario também importa?",
+          "a": "Sim. CNAEs secundários também podem gerar análise sanitária, especialmente quando envolverem fabricação, manipulação, armazenamento, transporte, prestação de serviços, comercialização de produtos sujeitos a Vigilância Sanitária ou atividades de interesse a saúde. A empresa deve informar os CNAEs que correspondam as atividades efetivamente realizadas, pois o risco sanitário não depende apenas da atividade principal."
+        },
+        {
+          "n": 13,
+          "q": "O que acontece quando o CNAE não corresponde a atividade real?",
+          "a": "A Vigilância Sanitária não determina quais CNAEs a empresa deve possuir. A definicao dos CNAEs e de responsabilidade da empresa e de sua contabilidade, conforme as atividades que serão efetivamente exercidas. No entanto, o enquadramento sanitário será analisado a partir das informações declaradas, dos CNAEs informados e da atividade real verificada. Assim, quando a empresa informa CNAEs de alto, medio ou baixo risco sanitário, essa declaracao pode acarretar a cobranca de documentos, exigências e procedimentos compatíveis com o respectivo nivel de risco. Por isso, e fundamental que constem no cadastro apenas CNAEs coerentes com as atividades realmente exercidas. CNAEs incompatíveis, ausentes ou declarados de forma inadequada podem gerar exigências incorretas, necessidade de correção cadastral, atraso na análise do processo ou reavaliação do enquadramento sanitário."
+        },
+        {
+          "n": 14,
+          "q": "A descrição do objeto social deve ser genérica ou detalhada?",
+          "a": "A descrição deve ser clara e compatível com a atividade real da empresa. Objetos sociais muito genéricos podem dificultar a análise sanitária, principalmente quando não permitem identificar se haverá manipulação, fabricação, armazenamento, prestação de serviço, atendimento ao público ou outra atividade sujeita a Vigilância Sanitária. Quanto mais coerente for a relação entre CNAE, objeto social e atividade real, menor tende a ser o risco de exigências posteriores ou necessidade de correção."
+        },
+        {
+          "n": 15,
+          "q": "A empresa pode exercer atividade diferente daquela informada no cadastro?",
+          "a": "Não deve. A empresa precisa manter seu cadastro compatível com a atividade efetivamente exercida. Quando houver inclusão, exclusão ou alteração de atividade, deve verificar a necessidade de atualização cadastral e de comunicação a Vigilância Sanitária, especialmente se a mudança alterar o risco sanitário, a documentação exigida ou a forma de funcionamento."
+        }
+      ]
+    },
+    {
+      "title": "Protocolos, Betha e documentação",
+      "description": "Conferência documental e envio correto das informações.",
+      "icon": "clipboard",
+      "questions": [
+        {
+          "n": 16,
+          "q": "O que costuma atrasar um protocolo sanitário?",
+          "a": "Os atrasos mais comuns ocorrem por documentação incompleta, CNAE incompatível, endereço incorreto, falta de informações sobre a atividade real, ausência de documentos específicos, formulários preenchidos de forma genérica ou protocolos feitos sem consulta prévia."
+        },
+        {
+          "n": 17,
+          "q": "A lista de documentos é igual para todas as empresas?",
+          "a": "Não. A documentação depende da atividade, do risco sanitário, da estrutura, do tipo de serviço, dos produtos envolvidos e da legislação aplicável. Empresas diferentes podem ter exigências diferentes."
+        },
+        {
+          "n": 18,
+          "q": "O contador deve confirmar a documentação antes de protocolar?",
+          "a": "Sim. Sempre que houver dúvida, é recomendável confirmar previamente a documentação exigida para a atividade. Como o Protocolo Betha ainda está em fase de implantação para alguns serviços, a disponibilidade do serviço on-line e a forma correta de envio podem variar. Antes de protocolar, o contador deve verificar se o serviço já está disponível no sistema e se a documentação está completa. Essa conferência reduz retrabalho, evita protocolo em categoria incorreta e agiliza a análise pela Vigilância Sanitária."
+        },
+        {
+          "n": 19,
+          "q": "O contrato social ou cadastro da empresa precisa estar atualizado?",
+          "a": "Sim. Os dados cadastrais devem refletir a realidade da empresa, incluindo razão social, endereço, atividades, responsáveis e demais informações necessárias."
+        },
+        {
+          "n": 20,
+          "q": "A Vigilância Sanitária pode pedir documentos complementares?",
+          "a": "Sim. Quando a documentação apresentada não for suficiente para avaliar o risco ou a regularidade da atividade, podem ser solicitados documentos, esclarecimentos ou adequações complementares."
+        }
+      ]
+    },
+    {
+      "title": "Alterações de empresa",
+      "description": "Mudanças de endereço, CNAE, responsável, reforma ou ampliação.",
+      "icon": "spark",
+      "questions": [
+        {
+          "n": 21,
+          "q": "Mudança de endereço precisa ser comunicada a Vigilância Sanitária?",
+          "a": "Sim, quando a empresa estiver sujeita a Vigilância Sanitária. O novo local pode alterar completamente a análise da atividade, da estrutura e do risco."
+        },
+        {
+          "n": 22,
+          "q": "Alteração de CNAE precisa ser informada?",
+          "a": "Sim. A inclusão, exclusão ou alteração de CNAE pode modificar o enquadramento sanitário e a documentação exigida. A Vigilância Sanitária não define os CNAEs da empresa, mas analisa as consequências sanitárias das atividades declaradas e exercidas."
+        },
+        {
+          "n": 23,
+          "q": "Mudança de responsável legal interfere no processo?",
+          "a": "Pode interferir. A empresa deve manter seus dados atualizados, especialmente quando houver alteração de responsável legal, responsável técnico ou representante vinculado ao processo sanitário."
+        },
+        {
+          "n": 24,
+          "q": "Ampliação de atividade precisa passar pela Vigilância?",
+          "a": "Sim, quando a ampliação envolver nova atividade sujeita a Vigilância Sanitária ou mudança relevante no risco sanitário. Exemplo: uma empresa que apenas vendia produtos passa a manipular, fabricar, fracionar, armazenar ou prestar serviço relacionado a saúde."
+        },
+        {
+          "n": 25,
+          "q": "Reforma ou ampliação física precisa ser comunicada?",
+          "a": "Quando a reforma altera área de manipulação, atendimento, armazenamento, sanitários, fluxo, ventilação, abastecimento de água ou capacidade de produção, a Vigilância Sanitária deve ser consultada."
+        }
+      ]
+    },
+    {
+      "title": "Responsabilidade da empresa e da contabilidade",
+      "description": "Limites da atuação contábil e riscos de orientar sem análise.",
+      "icon": "users",
+      "questions": [
+        {
+          "n": 26,
+          "q": "O contador é responsável pela condição sanitária da empresa?",
+          "a": "A responsabilidade pela atividade e pela estrutura é da empresa e de seus responsáveis. Porém, a contabilidade tem papel importante na correta orientação cadastral, documental e formal do processo."
+        },
+        {
+          "n": 27,
+          "q": "O contador deve prometer ao cliente que o alvará será liberado?",
+          "a": "Não. A liberação depende da análise da documentação, do enquadramento da atividade, da classificação de risco e, quando aplicável, da vistoria ou avaliação da autoridade sanitária."
+        },
+        {
+          "n": 28,
+          "q": "O que a contabilidade deve evitar?",
+          "a": "Deve evitar protocolar informações incompletas, utilizar CNAE incompatível com a atividade real, declarar atividade diferente da exercida, orientar início irregular da operação ou tratar a dispensa de alvará como dispensa de normas sanitárias."
+        },
+        {
+          "n": 29,
+          "q": "A empresa de baixo risco pode ser fiscalizada?",
+          "a": "Sim. Baixo risco não significa ausência de responsabilidade. A empresa continua obrigada a cumprir as normas sanitárias e pode ser fiscalizada."
+        },
+        {
+          "n": 30,
+          "q": "O que é melhor: protocolar rápido ou protocolar corretamente?",
+          "a": "Protocolar corretamente. Um protocolo incompleto ou incompatível pode gerar retrabalho, exigências, indeferimento, atraso e desgaste entre empresa, contador e Vigilância Sanitária."
+        }
+      ]
+    },
+    {
+      "title": "Comunicação com a Vigilância Sanitária",
+      "description": "Informações que ajudam a orientar melhor e evitar retrabalho.",
+      "icon": "hand",
+      "questions": [
+        {
+          "n": 31,
+          "q": "Quando o contador deve procurar a Vigilância Sanitária?",
+          "a": "Sempre que houver dúvida sobre enquadramento, documentação, CNAE, atividade real, mudança de endereço, início de atividade sujeita a fiscalização, reforma, ampliação ou alteração relevante no funcionamento da empresa."
+        },
+        {
+          "n": 32,
+          "q": "Quais informações ajudam a Vigilância a orientar melhor?",
+          "a": "Nome da empresa, CNPJ ou CPF quando houver, endereço, CNAEs, descrição real da atividade, forma de funcionamento, produtos ou serviços oferecidos, existência de manipulação, fabricação, armazenamento, transporte, atendimento ao público e situação atual do processo."
+        },
+        {
+          "n": 33,
+          "q": "E possível resolver tudo apenas pelo CNAE?",
+          "a": "Não. O CNAE ajuda, mas não substitui a análise da atividade real. Duas empresas com o mesmo CNAE podem ter riscos diferentes dependendo da estrutura e da forma de operação."
+        },
+        {
+          "n": 34,
+          "q": "Como melhorar a relação entre contabilidade, empresa e Vigilância?",
+          "a": "Com informações claras, documentos completos, consulta prévia quando necessário, respeito aos prazos e compreensão de que a análise sanitária existe para prevenir riscos à saúde coletiva."
+        },
+        {
+          "n": 35,
+          "q": "Qual é a orientação principal para os contadores?",
+          "a": "Antes de protocolar, confirme se o CNAE, a atividade real, o endereço e a documentação estão coerentes. Essa simples conferência evita grande parte dos problemas no processo sanitário."
+        }
+      ]
+    }
+  ];
+
+  let currentMode = "cidadao";
+
+  function modeData() {
+    return PORTAL_MODES[currentMode] || PORTAL_MODES.cidadao;
+  }
+
+  function setMetaThemeColor(color) {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", color);
+  }
+
+  function applyModeTheme() {
+    document.body.dataset.mode = currentMode;
+    document.body.classList.remove("mode-cidadao", "mode-contador", "mode-empresa");
+    document.body.classList.add(`mode-${currentMode}`);
+    const colors = {
+      cidadao: "#f7f9fb",
+      contador: "#0b1118",
+      empresa: "#0a2440"
+    };
+    setMetaThemeColor(colors[currentMode] || colors.cidadao);
+    if (searchInput) searchInput.placeholder = modeData().searchPlaceholder;
+  }
+
+  function modeLottie(modeId) {
+    const files = {
+      cidadao: "assets/area-cidadao.lottie",
+      contador: "assets/area-contador.lottie",
+      empresa: "assets/area-empresa.lottie"
+    };
+    return files[modeId] || files.cidadao;
+  }
+
+  function renderModeSwitcher() {
+    if (!portalModeSwitcher) return;
+    portalModeSwitcher.innerHTML = Object.values(PORTAL_MODES).map(mode => `
+      <button
+        type="button"
+        class="mode-switch-button mode-switch-${mode.id} ${mode.id === currentMode ? "active" : ""}"
+        data-mode="${mode.id}"
+        aria-pressed="${mode.id === currentMode ? "true" : "false"}"
+        aria-label="Abrir ${esc(mode.label)}"
+      >
+        <span class="mode-switch-fallback" aria-hidden="true">${esc(mode.label)}</span>
+        <dotlottie-wc
+          class="mode-switch-lottie"
+          src="${esc(modeLottie(mode.id))}"
+          speed="1"
+          autoplay
+          loop
+          aria-hidden="true"
+        ></dotlottie-wc>
+      </button>
+    `).join("");
+    setupModeAnimations();
+  }
+
+  function setupModeAnimations() {
+    if (!portalModeSwitcher) return;
+    const reveal = player => {
+      const button = player.closest(".mode-switch-button");
+      if (button) button.classList.add("animation-ready");
+    };
+
+    portalModeSwitcher.querySelectorAll("dotlottie-wc").forEach(player => {
+      player.addEventListener("ready", () => reveal(player), { once: true });
+      player.addEventListener("load", () => reveal(player), { once: true });
+      if (player.dotLottie) reveal(player);
+    });
+  }
+
+  function renderPortalContext() {
+    if (!portalContextBar) return;
+    if (currentMode === "cidadao") {
+      portalContextBar.innerHTML = "";
+      portalContextBar.hidden = true;
+      return;
+    }
+    portalContextBar.hidden = true;
+    portalContextBar.innerHTML = "";
+  }
+
+  function renderModeLanding() {
+    const mode = modeData();
+    if (mode.id === "contador") return renderContadorLanding(mode);
+    if (mode.id === "empresa") return renderEmpresaLanding(mode);
+    return "";
+  }
+
+  function renderContadorLanding(mode) {
+    return `
+      <section class="mode-landing mode-landing-contador contador-page">
+        <section class="contador-hero contador-hero-approved">
+          <div class="contador-hero-copy">
+            <p class="kicker">${esc(mode.kicker)}</p>
+            <h1>Área do Contador</h1>
+          </div>
+          <aside class="contador-directive-card contador-keywords-card">
+            <small>Orientação central</small>
+            <div class="contador-keywords" aria-label="Palavras-chave da Área do Contador">
+              <span>Responsabilidade</span>
+              <span>Ética</span>
+              <span>Comprometimento</span>
+            </div>
+          </aside>
+        </section>
+
+        <section class="contador-menu-cards" aria-label="Menus da Área do Contador">
+          <a class="contador-menu-card primary" href="#contador/documentacoes">
+            <span>${icon("clipboard")}</span>
+            <div>
+              <small>Menu técnico</small>
+              <strong>Documentações</strong>
+              <p>Serviços já organizados para protocolação e consulta de documentos necessários.</p>
+            </div>
+            ${icon("arrow")}
+          </a>
+
+          <a class="contador-menu-card" href="#contador/cnae-atividade-real">
+            <span>${icon("layout")}</span>
+            <div>
+              <small>Enquadramento</small>
+              <strong>CNAE e atividade real</strong>
+              <p>O que deve estar coerente antes de orientar abertura, alteração ou protocolo.</p>
+            </div>
+            ${icon("arrow")}
+          </a>
+
+          <a class="contador-menu-card" href="#contador/protocolos-betha">
+            <span>${icon("book")}</span>
+            <div>
+              <small>Envio correto</small>
+              <strong>Protocolos e Betha</strong>
+              <p>Cuidados antes do envio para evitar anexos incorretos e retrabalho.</p>
+            </div>
+            ${icon("arrow")}
+          </a>
+
+          <a class="contador-menu-card" href="#contador/alteracoes-empresa">
+            <span>${icon("building")}</span>
+            <div>
+              <small>Cadastro</small>
+              <strong>Alterações de empresa</strong>
+              <p>Mudança de endereço, atividade, estrutura, responsáveis e comunicação necessária.</p>
+            </div>
+            ${icon("arrow")}
+          </a>
+
+          <a class="contador-menu-card" href="#contador/faq">
+            <span>${icon("question")}</span>
+            <div>
+              <small>Consulta técnica</small>
+              <strong>FAQ técnico</strong>
+              <p>35 perguntas orientativas organizadas em blocos para consulta rápida.</p>
+            </div>
+            ${icon("arrow")}
+          </a>
+
+          <a class="contador-menu-card quiet" href="#contador/panfletos">
+            <span>${icon("sparkles")}</span>
+            <div>
+              <small>Espaço reservado</small>
+              <strong>Panfletos e Interatividade</strong>
+              <p></p>
+            </div>
+            ${icon("arrow")}
+          </a>
+        </section>
+      </section>
+    `;
+  }
+
+  function renderEmpresaLanding(mode) {
+    const empresaCards = [
+      ["Antes de abrir ou alterar", "O endereço, a atividade real e a estrutura devem ser avaliados antes do funcionamento ou da mudança.", "building", "empresa/antes-de-abrir-alterar"],
+      ["Documentos da empresa", "Os documentos variam conforme atividade, risco, estrutura e serviço realizado.", "clipboard", "empresa/documentos"],
+      ["Fiscalização e responsabilidades", "O estabelecimento deve manter rotinas, registros e condições sanitárias compatíveis com sua atividade.", "shield", "empresa/fiscalizacao-responsabilidades"],
+      ["Situações comuns", "Mudança de endereço, reforma, ampliação, nova atividade e outras situações que exigem atenção.", "question", "empresa/situacoes-comuns"],
+      ["Panfletos e Interatividade", "", "sparkles", "empresa/panfletos"]
+    ];
+    return `
+      <section class="mode-landing mode-landing-empresa empresa-page">
+        <section class="empresa-hero">
+          <div>
+            <p class="kicker">${esc(mode.kicker)}</p>
+            <h1>Área da Empresa</h1>
+            <p>Orientação prática para organização, funcionamento e responsabilidade sanitária do estabelecimento.</p>
+          </div>
+          <aside>
+            <strong>Organizar antes evita corrigir depois.</strong>
+            <p>A empresa deve acompanhar suas atividades, estrutura, documentos e alterações relevantes.</p>
+          </aside>
+        </section>
+        <div class="empresa-card-grid">
+          ${empresaCards.map(([title, text, ico, route]) => `
+            <a class="empresa-premium-card empresa-menu-link" href="#${esc(route)}">
+              <span>${icon(ico)}</span>
+              <h2>${esc(title)}</h2>
+              ${text ? `<p>${esc(text)}</p>` : ""}
+            </a>
+          `).join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function activateMode(modeId) {
+    const routes = { cidadao: "inicio", contador: "contador", empresa: "empresa" };
+    if (!PORTAL_MODES[modeId]) return;
+    const nextRoute = routes[modeId] || "inicio";
+    currentMode = modeId;
+    if ((window.location.hash || "#inicio") !== `#${nextRoute}`) {
+      window.location.hash = nextRoute;
+      return;
+    }
+    route();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({
@@ -132,21 +623,200 @@
     ).join("");
   }
 
+  
+  function specialPageHeader(kicker, title, description = "") {
+    return `<header class="special-subpage-head">
+      <p class="kicker">${esc(kicker)}</p>
+      <h1>${esc(title)}</h1>
+      ${description ? `<p>${esc(description)}</p>` : ""}
+    </header>`;
+  }
+
+  function renderContadorDocumentacoes() {
+    renderTopNavigation("contador", "documentacoes");
+    renderAreaTabs(null);
+    setBreadcrumb([{ label: "Área do Contador", route: "contador" }, { label: "Documentações", route: "contador/documentacoes" }]);
+    transition(`
+      <section class="mode-landing mode-landing-contador contador-page special-subpage">
+        ${specialPageHeader("Área do Contador", "Documentações", "Documentações necessárias e serviços já disponíveis para protocolação pelo Protocolo Betha.")}
+        <section class="contador-docs-grid" aria-label="Documentações com protocolação pelo Betha">
+          ${CONTADOR_BETHA_DOCUMENTOS.map((name, index) => `
+            <article class="contador-doc-card">
+              <span class="contador-doc-number">${String(index + 1).padStart(2, "0")}</span>
+              <div>
+                <h2>${esc(name)}</h2>
+                <p>Consulte a página oficial para verificar os documentos exigidos e a forma correta de envio.</p>
+                <a href="${OFFICIAL_VISA_URL}" target="_blank" rel="noopener noreferrer">Ver documentos ${icon("external")}</a>
+              </div>
+            </article>
+          `).join("")}
+        </section>
+      </section>
+    `);
+  }
+
+  function renderContadorCnaeAtividade() {
+    renderTopNavigation("contador", "cnae");
+    renderAreaTabs(null);
+    setBreadcrumb([{ label: "Área do Contador", route: "contador" }, { label: "CNAE e atividade real", route: "contador/cnae-atividade-real" }]);
+    transition(`
+      <section class="mode-landing mode-landing-contador contador-page special-subpage">
+        ${specialPageHeader("Área do Contador", "CNAE e atividade real", "A análise sanitária considera o cadastro informado, mas também a atividade efetivamente exercida, a estrutura e o risco envolvido.")}
+        <section class="special-info-grid">
+          <article>${icon("layout")}<h2>CNAE não resolve tudo sozinho</h2><p>O CNAE é uma base importante, mas não substitui a análise da atividade real.</p></article>
+          <article>${icon("clipboard")}<h2>Objeto social claro ajuda</h2><p>Descrições genéricas podem dificultar o entendimento do que a empresa realmente fará.</p></article>
+          <article>${icon("shield")}<h2>Risco depende da operação</h2><p>Manipulação, fabricação, armazenamento, atendimento e estrutura podem alterar a análise.</p></article>
+        </section>
+      </section>
+    `);
+  }
+
+  function renderContadorProtocolosBetha() {
+    renderTopNavigation("contador", "betha");
+    renderAreaTabs(null);
+    setBreadcrumb([{ label: "Área do Contador", route: "contador" }, { label: "Protocolos e Betha", route: "contador/protocolos-betha" }]);
+    transition(`
+      <section class="mode-landing mode-landing-contador contador-page special-subpage">
+        ${specialPageHeader("Área do Contador", "Protocolos e Betha", "Antes do envio, confira o serviço correto, a documentação, a atividade declarada e a coerência dos dados.")}
+        <section class="special-info-grid">
+          <article>${icon("book")}<h2>Protocolo correto</h2><p>Um envio incorreto gera retrabalho, exigências e atraso na análise.</p></article>
+          <article>${icon("clipboard")}<h2>Anexos completos</h2><p>A documentação depende da atividade, do risco, da estrutura e do serviço solicitado.</p></article>
+          <article>${icon("info")}<h2>Betha em organização</h2><p>Alguns serviços já podem estar disponíveis; outros podem depender de orientação específica.</p></article>
+        </section>
+      </section>
+    `);
+  }
+
+  function renderContadorAlteracoesEmpresa() {
+    renderTopNavigation("contador", "alteracoes");
+    renderAreaTabs(null);
+    setBreadcrumb([{ label: "Área do Contador", route: "contador" }, { label: "Alterações de empresa", route: "contador/alteracoes-empresa" }]);
+    transition(`
+      <section class="mode-landing mode-landing-contador contador-page special-subpage">
+        ${specialPageHeader("Área do Contador", "Alterações de empresa", "Mudanças cadastrais, estruturais ou operacionais podem alterar a análise sanitária.")}
+        <section class="special-info-grid">
+          <article>${icon("building")}<h2>Endereço</h2><p>O novo local pode mudar estrutura, fluxo, acesso, água, esgoto e compatibilidade da atividade.</p></article>
+          <article>${icon("layout")}<h2>Atividade ou CNAE</h2><p>Inclusão, exclusão ou alteração de atividade pode alterar documentos e procedimentos.</p></article>
+          <article>${icon("shield")}<h2>Estrutura física</h2><p>Reforma, ampliação ou mudança de fluxo deve ser avaliada quando impactar a atividade.</p></article>
+        </section>
+      </section>
+    `);
+  }
+
+  function renderContadorFaqPage() {
+    renderTopNavigation("contador", "faq");
+    renderAreaTabs(null);
+    setBreadcrumb([{ label: "Área do Contador", route: "contador" }, { label: "FAQ técnico", route: "contador/faq" }]);
+    transition(`
+      <section class="mode-landing mode-landing-contador contador-page special-subpage">
+        ${specialPageHeader("Área do Contador", "FAQ técnico", "Perguntas frequentes para abertura, alteração e regularização de empresas.")}
+        <section class="contador-blocks" aria-label="Blocos da Área do Contador">
+          ${CONTADOR_FAQ_BLOCKS.map((block, index) => `
+            <details class="contador-block" ${index === 0 ? "open" : ""}>
+              <summary>
+                <span class="contador-block-icon">${icon(block.icon)}</span>
+                <div>
+                  <small>Bloco ${String(index + 1).padStart(2, "0")}</small>
+                  <h2>${esc(block.title)}</h2>
+                  <p>${esc(block.description)}</p>
+                </div>
+                ${icon("chevron", "contador-chevron")}
+              </summary>
+              <div class="contador-question-list">
+                ${block.questions.map(item => `
+                  <article class="contador-question-card">
+                    <span class="contador-question-number">${String(item.n).padStart(2, "0")}</span>
+                    <div>
+                      <h3>${esc(item.q)}</h3>
+                      <p>${esc(item.a)}</p>
+                    </div>
+                  </article>
+                `).join("")}
+              </div>
+            </details>
+          `).join("")}
+        </section>
+      </section>
+    `);
+  }
+
+  function renderEmpresaSimplePage(pageId) {
+    const pages = {
+      "antes-de-abrir-alterar": ["Área da Empresa", "Antes de abrir ou alterar", "Verifique atividade real, endereço, estrutura e documentos antes do funcionamento ou da mudança."],
+      "documentos": ["Área da Empresa", "Documentos da empresa", "Os documentos variam conforme atividade, risco sanitário, estrutura e serviço realizado."],
+      "fiscalizacao-responsabilidades": ["Área da Empresa", "Fiscalização e responsabilidades", "A empresa mantém responsabilidade contínua pelas condições sanitárias da atividade."],
+      "situacoes-comuns": ["Área da Empresa", "Situações comuns", "Mudança de endereço, reforma, ampliação, nova atividade e alterações relevantes exigem atenção."]
+    };
+    const page = pages[pageId] || pages["antes-de-abrir-alterar"];
+    renderTopNavigation("empresa", pageId);
+    renderAreaTabs(null);
+    setBreadcrumb([{ label: "Área da Empresa", route: "empresa" }, { label: page[1], route: `empresa/${pageId}` }]);
+    transition(`
+      <section class="mode-landing mode-landing-empresa empresa-page special-subpage">
+        ${specialPageHeader(page[0], page[1], page[2])}
+      </section>
+    `);
+  }
+
+  function renderPanfletosPage(modeId = currentMode) {
+    const modeClass = modeId === "contador"
+      ? "mode-landing-contador contador-page"
+      : modeId === "empresa"
+        ? "mode-landing-empresa empresa-page"
+        : "panfletos-public-page";
+    renderTopNavigation(modeId === "cidadao" ? "" : modeId, "panfletos");
+    renderAreaTabs(null);
+    setBreadcrumb([{ label: "Panfletos e Interatividade", route: "panfletos" }]);
+    transition(`
+      <section class="mode-landing ${modeClass} special-subpage panfletos-only-title">
+        ${specialPageHeader("Conteúdo interativo", "Panfletos e Interatividade")}
+      </section>
+    `);
+  }
+
   function renderTopNavigation(activeAreaId = "", activePage = "") {
+    const specialMode = activeAreaId === "contador" || activeAreaId === "empresa";
     document.body.dataset.area = activePage || activeAreaId || "inicio";
-    officialNoticeLink.href = activeAreaId ? `#area/${activeAreaId}/legislacao` : config.officialChannels.visaPage;
-    officialNoticeLink.textContent = activeAreaId ? "Abrir fontes desta área" : "Abrir página oficial";
-    if (activeAreaId) {
+    officialNoticeLink.href = activeAreaId && !specialMode ? `#area/${activeAreaId}/legislacao` : config.officialChannels.visaPage;
+    officialNoticeLink.textContent = activeAreaId && !specialMode ? "Abrir fontes desta área" : "Abrir página oficial";
+    if (activeAreaId && !specialMode) {
       officialNoticeLink.removeAttribute("target");
       officialNoticeLink.removeAttribute("rel");
     } else {
       officialNoticeLink.target = "_blank";
       officialNoticeLink.rel = "noopener noreferrer";
     }
+
+    if (activeAreaId === "contador") {
+      topNavigation.innerHTML = `
+        <a href="#contador" class="${activePage === "inicio" || !activePage ? "active" : ""}">Início do Contador</a>
+        <a href="#contador/documentacoes" class="${activePage === "documentacoes" ? "active" : ""}">Documentações</a>
+        <a href="#contador/cnae-atividade-real" class="${activePage === "cnae" ? "active" : ""}">CNAE e Atividade Real</a>
+        <a href="#contador/protocolos-betha" class="${activePage === "betha" ? "active" : ""}">Protocolos e Betha</a>
+        <a href="#contador/alteracoes-empresa" class="${activePage === "alteracoes" ? "active" : ""}">Alterações de Empresa</a>
+        <a href="#contador/faq" class="${activePage === "faq" ? "active" : ""}">FAQ técnico</a>
+        <a href="#contador/panfletos" class="${activePage === "panfletos" ? "active" : ""}">Panfletos e Interatividade</a>
+      `;
+      return;
+    }
+
+    if (activeAreaId === "empresa") {
+      topNavigation.innerHTML = `
+        <a href="#empresa" class="${activePage === "inicio" || !activePage ? "active" : ""}">Início da Empresa</a>
+        <a href="#empresa/antes-de-abrir-alterar" class="${activePage === "antes-de-abrir-alterar" ? "active" : ""}">Antes de Abrir ou Alterar</a>
+        <a href="#empresa/documentos" class="${activePage === "documentos" ? "active" : ""}">Documentos da Empresa</a>
+        <a href="#empresa/fiscalizacao-responsabilidades" class="${activePage === "fiscalizacao-responsabilidades" ? "active" : ""}">Fiscalização e Responsabilidades</a>
+        <a href="#empresa/situacoes-comuns" class="${activePage === "situacoes-comuns" ? "active" : ""}">Situações Comuns</a>
+        <a href="#empresa/panfletos" class="${activePage === "panfletos" ? "active" : ""}">Panfletos e Interatividade</a>
+      `;
+      return;
+    }
+
     topNavigation.innerHTML = `
       <a href="#inicio" class="${!activeAreaId && !activePage ? "active" : ""}">Início</a>
       <a href="#avisos" class="${activePage === "avisos" ? "active" : ""}">Avisos e Campanhas</a>
       <a href="#agua" class="${activePage === "agua" ? "active" : ""}">Qualidade da Água</a>
+      <a href="#panfletos" class="${activePage === "panfletos" ? "active" : ""}">Panfletos e Interatividade</a>
       ${areaList().map(area =>
         `<a href="#area/${area.id}" class="${activeAreaId === area.id ? "active" : ""}">${esc(area.navTitle || area.title)}</a>`
       ).join("")}
@@ -187,22 +857,28 @@
   }
 
   function renderHome() {
+    const mode = modeData();
+
+    if (mode.id !== "cidadao") {
+      if (topNavigation) topNavigation.innerHTML = "";
+      renderAreaTabs(null);
+      if (breadcrumb) breadcrumb.innerHTML = "";
+      transition(renderModeLanding());
+      return;
+    }
+
     renderTopNavigation("");
     renderAreaTabs(null);
     setBreadcrumb([{ label: "Início", route: "inicio" }]);
 
     transition(`
-      <section class="home-hero-refined">
-        <p class="kicker">Dúvidas e respostas</p>
-        <h1>Encontre a orientação certa.</h1>
-      </section>
-
       ${homeNoticeHighlight()}
 
       <section class="home-area-section">
         <header class="home-section-title">
-          <p class="kicker">Áreas</p>
-          <h2>Escolha o assunto</h2>
+          <p class="kicker">Assuntos</p>
+          <h2>Navegação pública</h2>
+          <p>Conteúdo organizado por tema para consulta pública.</p>
         </header>
         <div class="area-grid">
           ${areaList().map(area => `
@@ -636,7 +1312,7 @@
       <div class="water-last-sample">
         <small>Última coleta registrada</small>
         <strong>${esc(item.ultimaColeta || "Não informado")}</strong>
-        <span>${esc(item.situacaoUltimaColeta || "Não informado")}</span>
+        <span>${esc(item.situaçãoUltimaColeta || "Não informado")}</span>
       </div>
       <p class="water-details-summary">${esc(item.resumo)}</p>
       <div class="water-gauge" aria-label="Distribuição geral dos resultados de 2014 a 2026">
@@ -704,7 +1380,7 @@
           <p class="kicker">Área selecionada</p>
           <h3>${esc(item.nome)}</h3>
         </div>
-        <span>${esc(item.ultimaColeta || "Sem data")} · ${esc(item.situacaoUltimaColeta || "Não informado")}</span>
+        <span>${esc(item.ultimaColeta || "Sem data")} · ${esc(item.situaçãoUltimaColeta || "Não informado")}</span>
       </div>
       <div class="water-analysis-grid">
         <article class="water-analysis-card wide">
@@ -1182,7 +1858,45 @@
   function route() {
     const parts = (location.hash.replace(/^#/, "") || "inicio").split("/").map(decodeURIComponent);
 
+    if (parts[0] === "contador") currentMode = "contador";
+    else if (parts[0] === "empresa") currentMode = "empresa";
+    else currentMode = "cidadao";
+
+    applyModeTheme();
+    renderModeSwitcher();
+    renderPortalContext();
+
+    if (parts[0] === "contador") {
+      if (!parts[1]) {
+        renderTopNavigation("contador", "inicio");
+        renderAreaTabs(null);
+        setBreadcrumb([{ label: "Área do Contador", route: "contador" }]);
+        transition(renderContadorLanding(modeData()));
+        return;
+      }
+      if (parts[1] === "documentacoes") return renderContadorDocumentacoes();
+      if (parts[1] === "cnae-atividade-real") return renderContadorCnaeAtividade();
+      if (parts[1] === "protocolos-betha") return renderContadorProtocolosBetha();
+      if (parts[1] === "alteracoes-empresa") return renderContadorAlteracoesEmpresa();
+      if (parts[1] === "faq") return renderContadorFaqPage();
+      if (parts[1] === "panfletos") return renderPanfletosPage("contador");
+      return renderNotFound();
+    }
+
+    if (parts[0] === "empresa") {
+      if (!parts[1]) {
+        renderTopNavigation("empresa", "inicio");
+        renderAreaTabs(null);
+        setBreadcrumb([{ label: "Área da Empresa", route: "empresa" }]);
+        transition(renderEmpresaLanding(modeData()));
+        return;
+      }
+      if (parts[1] === "panfletos") return renderPanfletosPage("empresa");
+      return renderEmpresaSimplePage(parts[1]);
+    }
+
     if (parts[0] === "inicio") return renderHome();
+    if (parts[0] === "panfletos") return renderPanfletosPage("cidadao");
     if (parts[0] === "agua") return renderWaterQuality();
     if (parts[0] === "avisos") {
       if (!parts[1]) return renderNotices();
@@ -1220,6 +1934,12 @@
       <p class="contact-note">Ao entrar em contato, informe o endereço e explique a sua dúvida.</p>`;
   }
 
+  portalModeSwitcher?.addEventListener("click", event => {
+    const button = event.target.closest("[data-mode]");
+    if (!button) return;
+    activateMode(button.dataset.mode);
+  });
+
   contactFab.addEventListener("click", () => {
     renderContactChannels();
     contactDialog.showModal();
@@ -1253,5 +1973,8 @@
   });
 
   installIcons();
+  applyModeTheme();
+  renderModeSwitcher();
+  renderPortalContext();
   route();
 })();

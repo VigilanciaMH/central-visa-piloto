@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Dúvidas e Respostas da Vigilância Sanitária de Maravilha/SC">
+  <meta name="description" content="Portal de Orientação Sanitária da Vigilância Sanitária de Maravilha/SC">
   <meta name="theme-color" content="#ffffff">
   <link rel="icon" href="assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <title>Dúvidas e Respostas da Vigilância Sanitária de Maravilha/SC</title>
+  <title>Portal de Orientação Sanitária de Maravilha/SC</title>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-wc@0.9.21/dist/dotlottie-wc.js"></script>
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -17,15 +18,18 @@
 
   <div class="institutional-stripe" aria-hidden="true"></div>
   <header class="site-header">
-    <a class="brand" href="#inicio" aria-label="Página inicial de Dúvidas e Respostas">
+    <a class="brand" href="#inicio" aria-label="Página inicial do Portal de Orientação Sanitária">
       <img class="municipal-crest" src="assets/images/brasao-maravilha.png" alt="Brasão do Município de Maravilha">
       <span class="brand-copy">
-        <strong>Dúvidas e Respostas</strong>
+        <strong>Portal de Orientação Sanitária</strong>
         <small>Vigilância Sanitária de Maravilha/SC</small>
       </span>
     </a>
 
-    <nav id="topNavigation" class="top-navigation" aria-label="Áreas principais"></nav>
+    <div class="header-center">
+      <div id="portalModeSwitcher" class="portal-mode-switcher" aria-label="Escolha o ambiente do portal"></div>
+      <nav id="topNavigation" class="top-navigation" aria-label="Áreas principais"></nav>
+    </div>
 
     <div class="header-actions">
       <img class="visa-lockup" src="assets/images/vigilancia-sanitaria.png" alt="Vigilância Sanitária">
@@ -38,6 +42,7 @@
   <main id="conteudo" class="main" tabindex="-1">
     <div id="breadcrumb" class="breadcrumb"></div>
     <div id="areaTabs" class="area-tabs-wrap"></div>
+    <section id="portalContextBar" class="portal-context-bar" aria-live="polite"></section>
     <aside id="officialNotice" class="official-notice">
       <span class="official-notice-icon" data-icon="info"></span>
       <div><strong>Confira a fonte oficial</strong><p>As normas podem mudar. Abra a fonte indicada antes de tomar uma decisão.</p></div>
