@@ -463,6 +463,16 @@
             ${icon("arrow")}
           </a>
 
+          <a class="contador-menu-card" href="#contador/classificacao-risco">
+            <span>${icon("shield")}</span>
+            <div>
+              <small>RN 01/2025</small>
+              <strong>Classificação de Risco</strong>
+              <p>Entenda os níveis I, II e III, condicionantes e regras para múltiplas atividades.</p>
+            </div>
+            ${icon("arrow")}
+          </a>
+
           <a class="contador-menu-card" href="#contador/protocolos-betha">
             <span>${icon("book")}</span>
             <div>
@@ -637,20 +647,14 @@
     renderAreaTabs(null);
     setBreadcrumb([{ label: "Área do Contador", route: "contador" }, { label: "Documentações", route: "contador/documentacoes" }]);
     transition(`
-      <section class="mode-landing mode-landing-contador contador-page special-subpage">
-        ${specialPageHeader("Área do Contador", "Documentações", "Documentações necessárias e serviços já disponíveis para protocolação pelo Protocolo Betha.")}
-        <section class="contador-docs-grid" aria-label="Documentações com protocolação pelo Betha">
-          ${CONTADOR_BETHA_DOCUMENTOS.map((name, index) => `
-            <article class="contador-doc-card">
-              <span class="contador-doc-number">${String(index + 1).padStart(2, "0")}</span>
-              <div>
-                <h2>${esc(name)}</h2>
-                <p>Consulte a página oficial para verificar os documentos exigidos e a forma correta de envio.</p>
-                <a href="${OFFICIAL_VISA_URL}" target="_blank" rel="noopener noreferrer">Ver documentos ${icon("external")}</a>
-              </div>
-            </article>
-          `).join("")}
-        </section>
+      <section class="mode-landing mode-landing-contador contador-page special-subpage documents-simple-page">
+        ${specialPageHeader("Área do Contador", "Documentações", "As documentações necessárias e os serviços disponíveis para protocolação podem ser consultados na página oficial da Vigilância Sanitária de Maravilha.")}
+        <div class="documents-official-card">
+          ${icon("clipboard")}
+          <h2>Documentações e serviços disponíveis</h2>
+          <p>Verifique na página oficial a documentação correspondente ao serviço desejado antes de iniciar o protocolo.</p>
+          <a href="https://maravilha.sc.gov.br/vigilancia-sanitaria/" target="_blank" rel="noopener noreferrer">Acessar página oficial ${icon("external")}</a>
+        </div>
       </section>
     `);
   }
@@ -661,12 +665,41 @@
     setBreadcrumb([{ label: "Área do Contador", route: "contador" }, { label: "CNAE e atividade real", route: "contador/cnae-atividade-real" }]);
     transition(`
       <section class="mode-landing mode-landing-contador contador-page special-subpage">
-        ${specialPageHeader("Área do Contador", "CNAE e atividade real", "A análise sanitária considera o cadastro informado, mas também a atividade efetivamente exercida, a estrutura e o risco envolvido.")}
+        ${specialPageHeader("Área do Contador", "CNAE e atividade real", "A análise considera o cadastro informado, mas também a atividade efetivamente exercida, a estrutura e o risco envolvido.")}
         <section class="special-info-grid">
+          <article>${icon("search")}<h2>Como conferir o CNAE?</h2><p>Consulte o IBGE — CONCLA e pesquise pela descrição da atividade, palavra-chave ou código.</p><a class="special-action-link" href="https://concla.ibge.gov.br/busca-online-cnae.html" target="_blank" rel="noopener noreferrer">Consultar no IBGE — CONCLA ${icon("external")}</a></article>
           <article>${icon("layout")}<h2>CNAE não resolve tudo sozinho</h2><p>O CNAE é uma base importante, mas não substitui a análise da atividade real.</p></article>
-          <article>${icon("clipboard")}<h2>Objeto social claro ajuda</h2><p>Descrições genéricas podem dificultar o entendimento do que a empresa realmente fará.</p></article>
-          <article>${icon("shield")}<h2>Risco depende da operação</h2><p>Manipulação, fabricação, armazenamento, atendimento e estrutura podem alterar a análise.</p></article>
+          <article>${icon("clipboard")}<h2>Cadastro compatível</h2><p>A empresa deve manter no CNPJ atividades compatíveis com aquilo que efetivamente exerce.</p></article>
         </section>
+        <aside class="technical-decision-note">${icon("info")}<p>O enquadramento e a orientação podem ser revistos pelo responsável da Vigilância Sanitária ou pelo órgão competente, conforme a atividade, as condições reais do estabelecimento e a legislação aplicável.</p></aside>
+      </section>
+    `);
+  }
+
+  function renderContadorClassificacaoRisco() {
+    renderTopNavigation("contador", "risco");
+    renderAreaTabs(null);
+    setBreadcrumb([{ label: "Área do Contador", route: "contador" }, { label: "Classificação de Risco", route: "contador/classificacao-risco" }]);
+    transition(`
+      <section class="mode-landing mode-landing-contador contador-page special-subpage">
+        ${specialPageHeader("Área do Contador", "Classificação de Risco", "A RN 01/2025 organiza as atividades econômicas sujeitas à Vigilância Sanitária por grau de risco.")}
+        <section class="risk-level-grid">
+          <article class="risk-level-card"><small>Nível I</small><h2>Baixo risco</h2><p>Dispensa de emissão de Alvará Sanitário, sem afastar o cumprimento das normas e a fiscalização posterior.</p></article>
+          <article class="risk-level-card"><small>Nível II</small><h2>Médio risco</h2><p>Há emissão de Alvará Sanitário, com possibilidade de fiscalização posterior e regras específicas conforme a atividade.</p></article>
+          <article class="risk-level-card"><small>Nível III</small><h2>Alto risco</h2><p>O funcionamento depende de inspeção prévia e emissão do Alvará Sanitário.</p></article>
+        </section>
+        <section class="risk-highlight-card">
+          <div>${icon("info")}</div>
+          <div><small>Atenção</small><h2>Uma atividade pode ter mais de uma classificação de risco.</h2><p>Condicionantes como cadeia de frio, piscina, procedimentos invasivos, uso de medicamentos, dispositivos médicos ou características específicas do serviço podem alterar o enquadramento.</p></div>
+        </section>
+        <section class="risk-highlight-card">
+          <div>${icon("layout")}</div>
+          <div><small>Múltiplas atividades</small><h2>Considera-se o nível de risco mais elevado.</h2><p>Quando o estabelecimento exerce atividades com classificações diferentes, o enquadramento deve considerar a atividade de maior risco.</p></div>
+        </section>
+        <div class="risk-actions">
+          <a href="assets/resolucao-normativa-01_2025.pdf" target="_blank" rel="noopener noreferrer">Abrir material explicativo da RN 01/2025 ${icon("external")}</a>
+        </div>
+        <aside class="technical-decision-note">${icon("info")}<p>A classificação e os procedimentos aplicáveis podem ser revistos pelo responsável da Vigilância Sanitária ou pelo órgão competente, considerando a atividade real, as condicionantes, a estrutura e a legislação vigente.</p></aside>
       </section>
     `);
   }
@@ -679,9 +712,13 @@
       <section class="mode-landing mode-landing-contador contador-page special-subpage">
         ${specialPageHeader("Área do Contador", "Protocolos e Betha", "Antes do envio, confira o serviço correto, a documentação, a atividade declarada e a coerência dos dados.")}
         <section class="special-info-grid">
-          <article>${icon("book")}<h2>Protocolo correto</h2><p>Um envio incorreto gera retrabalho, exigências e atraso na análise.</p></article>
-          <article>${icon("clipboard")}<h2>Anexos completos</h2><p>A documentação depende da atividade, do risco, da estrutura e do serviço solicitado.</p></article>
-          <article>${icon("info")}<h2>Betha em organização</h2><p>Alguns serviços já podem estar disponíveis; outros podem depender de orientação específica.</p></article>
+          <article>${icon("book")}<h2>Documentação inicial</h2><p>Os documentos indicados representam a documentação inicial para abertura e análise do processo.</p></article>
+          <article>${icon("clipboard")}<h2>Complementação posterior</h2><p>Após o protocolo, a Vigilância Sanitária poderá solicitar informações, esclarecimentos, documentos complementares ou adequações.</p></article>
+          <article>${icon("info")}<h2>Aplicação conforme o caso</h2><p>Alguns documentos podem ser obrigatórios ou dispensados conforme a atividade, a estrutura, os procedimentos e os produtos envolvidos.</p></article>
+        </section>
+        <section class="risk-highlight-card">
+          <div>${icon("shield")}</div>
+          <div><small>Decisão técnica</small><h2>A relação inicial de documentos não encerra a análise.</h2><p>A exigência, a dispensa ou a complementação documental será definida pela Vigilância Sanitária ou pelo órgão competente, conforme o caso concreto e a legislação aplicável.</p></div>
         </section>
       </section>
     `);
@@ -792,6 +829,7 @@
         <a href="#contador" class="${activePage === "inicio" || !activePage ? "active" : ""}">Início do Contador</a>
         <a href="#contador/documentacoes" class="${activePage === "documentacoes" ? "active" : ""}">Documentações</a>
         <a href="#contador/cnae-atividade-real" class="${activePage === "cnae" ? "active" : ""}">CNAE e Atividade Real</a>
+        <a href="#contador/classificacao-risco" class="${activePage === "risco" ? "active" : ""}">Classificação de Risco</a>
         <a href="#contador/protocolos-betha" class="${activePage === "betha" ? "active" : ""}">Protocolos e Betha</a>
         <a href="#contador/alteracoes-empresa" class="${activePage === "alteracoes" ? "active" : ""}">Alterações de Empresa</a>
         <a href="#contador/faq" class="${activePage === "faq" ? "active" : ""}">FAQ técnico</a>
@@ -1876,6 +1914,7 @@
       }
       if (parts[1] === "documentacoes") return renderContadorDocumentacoes();
       if (parts[1] === "cnae-atividade-real") return renderContadorCnaeAtividade();
+      if (parts[1] === "classificacao-risco") return renderContadorClassificacaoRisco();
       if (parts[1] === "protocolos-betha") return renderContadorProtocolosBetha();
       if (parts[1] === "alteracoes-empresa") return renderContadorAlteracoesEmpresa();
       if (parts[1] === "faq") return renderContadorFaqPage();
@@ -1945,6 +1984,14 @@
     contactDialog.showModal();
   });
   contactClose.addEventListener("click", () => contactDialog.close());
+
+  contactDialog.addEventListener("click", event => {
+    if (event.target === contactDialog) contactDialog.close();
+  });
+
+  searchDialog.addEventListener("click", event => {
+    if (event.target === searchDialog) searchDialog.close();
+  });
 
   searchButton.addEventListener("click", () => {
     searchDialog.showModal();

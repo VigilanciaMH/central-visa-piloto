@@ -5923,3 +5923,444 @@ body.mode-empresa .top-navigation a.active {
     font-size: 42px !important;
   }
 }
+
+
+/* === FASE: CLASSIFICAÇÃO DE RISCO + SELETOR CENTRAL MENOR === */
+.portal-mode-switcher {
+  width: auto !important;
+  max-width: 620px !important;
+  gap: 6px !important;
+  padding: 4px !important;
+  border: 1px solid rgba(21,34,56,.12) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.88) !important;
+  box-shadow: 0 8px 22px rgba(21,34,56,.08) !important;
+}
+
+.portal-mode-switcher .mode-switch-button,
+body.mode-contador .portal-mode-switcher .mode-switch-button,
+body.mode-empresa .portal-mode-switcher .mode-switch-button {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 150px !important;
+  height: 44px !important;
+  border-radius: 999px !important;
+  overflow: hidden !important;
+}
+
+.mode-switch-lottie {
+  display: none !important;
+}
+
+.mode-switch-fallback,
+.mode-switch-button.animation-ready .mode-switch-fallback {
+  position: static !important;
+  opacity: 1 !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 18px !important;
+  background: transparent !important;
+  font-family: "Manrope", "Inter", sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 850 !important;
+}
+
+.portal-mode-switcher .mode-switch-button.active .mode-switch-fallback {
+  color: #fff !important;
+}
+
+body.mode-contador .portal-mode-switcher,
+body.mode-empresa .portal-mode-switcher {
+  background: rgba(255,255,255,.04) !important;
+  border-color: var(--line) !important;
+}
+
+body.mode-contador .portal-mode-switcher .mode-switch-button.active .mode-switch-fallback {
+  color: #151108 !important;
+}
+
+body.mode-empresa .portal-mode-switcher .mode-switch-button.active .mode-switch-fallback {
+  color: #061523 !important;
+}
+
+.risk-level-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 16px;
+  max-width: 1120px;
+  margin: 0 auto 18px;
+}
+
+.risk-level-card,
+.risk-highlight-card,
+.documents-official-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255,255,255,.035);
+  box-shadow: var(--shadow);
+}
+
+.risk-level-card {
+  padding: 24px;
+}
+
+.risk-level-card small,
+.risk-highlight-card small {
+  color: var(--accent);
+  font-weight: 850;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.risk-level-card h2,
+.risk-highlight-card h2,
+.documents-official-card h2 {
+  color: var(--ink);
+  font: 850 24px/1.12 "Manrope","Inter",sans-serif;
+  letter-spacing: -.035em;
+}
+
+.risk-level-card p,
+.risk-highlight-card p,
+.documents-official-card p {
+  color: var(--muted);
+  line-height: 1.72;
+}
+
+.risk-highlight-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  max-width: 1120px;
+  margin: 16px auto 0;
+  padding: 22px;
+}
+
+.risk-highlight-card > div:first-child {
+  color: var(--accent);
+}
+
+.risk-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+}
+
+.risk-actions a,
+.documents-official-card a,
+.special-action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #151108;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.technical-decision-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 1120px;
+  margin: 22px auto 0;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255,255,255,.025);
+  color: var(--muted);
+}
+
+.technical-decision-note p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.documents-official-card {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 34px;
+  text-align: center;
+}
+
+.documents-official-card > .icon {
+  width: 34px;
+  height: 34px;
+  margin: 0 auto 14px;
+  color: var(--accent);
+}
+
+@media (max-width: 800px) {
+  .risk-level-grid {
+    grid-template-columns: 1fr;
+  }
+  .portal-mode-switcher {
+    width: min(100%, 320px) !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    border-radius: 20px !important;
+  }
+  .portal-mode-switcher .mode-switch-button,
+  body.mode-contador .portal-mode-switcher .mode-switch-button,
+  body.mode-empresa .portal-mode-switcher .mode-switch-button {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+
+/* === CORREÇÃO FINAL: SELETOR VISÍVEL E CORES FIXAS === */
+.portal-mode-switcher,
+body.mode-cidadao .portal-mode-switcher,
+body.mode-contador .portal-mode-switcher,
+body.mode-empresa .portal-mode-switcher {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  max-width: 650px !important;
+  gap: 7px !important;
+  padding: 5px !important;
+  border: 1px solid rgba(21,34,56,.12) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.92) !important;
+  box-shadow: 0 8px 22px rgba(21,34,56,.08) !important;
+  overflow: visible !important;
+}
+
+.portal-mode-switcher .mode-switch-button,
+body.mode-cidadao .portal-mode-switcher .mode-switch-button,
+body.mode-contador .portal-mode-switcher .mode-switch-button,
+body.mode-empresa .portal-mode-switcher .mode-switch-button {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 160px !important;
+  height: 44px !important;
+  padding: 0 18px !important;
+  margin: 0 !important;
+  border: 1px solid transparent !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+.portal-mode-switcher .mode-switch-cidadao,
+body.mode-cidadao .portal-mode-switcher .mode-switch-cidadao,
+body.mode-contador .portal-mode-switcher .mode-switch-cidadao,
+body.mode-empresa .portal-mode-switcher .mode-switch-cidadao {
+  background: #e9edf2 !important;
+  color: #172238 !important;
+  border-color: #d5dce5 !important;
+}
+
+.portal-mode-switcher .mode-switch-contador,
+body.mode-cidadao .portal-mode-switcher .mode-switch-contador,
+body.mode-contador .portal-mode-switcher .mode-switch-contador,
+body.mode-empresa .portal-mode-switcher .mode-switch-contador {
+  background: #090909 !important;
+  color: #ffffff !important;
+  border-color: #090909 !important;
+}
+
+.portal-mode-switcher .mode-switch-empresa,
+body.mode-cidadao .portal-mode-switcher .mode-switch-empresa,
+body.mode-contador .portal-mode-switcher .mode-switch-empresa,
+body.mode-empresa .portal-mode-switcher .mode-switch-empresa {
+  background: #102a46 !important;
+  color: #ffffff !important;
+  border-color: #102a46 !important;
+}
+
+.portal-mode-switcher .mode-switch-fallback,
+.portal-mode-switcher .mode-switch-button.animation-ready .mode-switch-fallback,
+body.mode-cidadao .portal-mode-switcher .mode-switch-fallback,
+body.mode-contador .portal-mode-switcher .mode-switch-fallback,
+body.mode-empresa .portal-mode-switcher .mode-switch-fallback {
+  position: static !important;
+  inset: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  font-family: "Manrope", "Inter", sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+.portal-mode-switcher .mode-switch-button.active,
+body.mode-cidadao .portal-mode-switcher .mode-switch-button.active,
+body.mode-contador .portal-mode-switcher .mode-switch-button.active,
+body.mode-empresa .portal-mode-switcher .mode-switch-button.active {
+  outline: 3px solid rgba(255,255,255,.88) !important;
+  outline-offset: -5px !important;
+  box-shadow: 0 0 0 2px rgba(21,34,56,.22), 0 8px 18px rgba(21,34,56,.15) !important;
+}
+
+.portal-mode-switcher .mode-switch-button:hover,
+.portal-mode-switcher .mode-switch-button:focus-visible {
+  transform: translateY(-1px) !important;
+  filter: brightness(1.04) !important;
+}
+
+.mode-switch-lottie {
+  display: none !important;
+}
+
+@media (max-width: 800px) {
+  .portal-mode-switcher,
+  body.mode-cidadao .portal-mode-switcher,
+  body.mode-contador .portal-mode-switcher,
+  body.mode-empresa .portal-mode-switcher {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    width: min(100%, 320px) !important;
+    max-width: 320px !important;
+    border-radius: 22px !important;
+  }
+
+  .portal-mode-switcher .mode-switch-button,
+  body.mode-cidadao .portal-mode-switcher .mode-switch-button,
+  body.mode-contador .portal-mode-switcher .mode-switch-button,
+  body.mode-empresa .portal-mode-switcher .mode-switch-button {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+
+/* === CORREÇÃO DO CONTORNO PERSISTENTE DOS BOTÕES === */
+.portal-mode-switcher .mode-switch-button,
+body.mode-cidadao .portal-mode-switcher .mode-switch-button,
+body.mode-contador .portal-mode-switcher .mode-switch-button,
+body.mode-empresa .portal-mode-switcher .mode-switch-button {
+  outline: none !important;
+  outline-offset: 0 !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.portal-mode-switcher .mode-switch-button:focus,
+.portal-mode-switcher .mode-switch-button:focus-visible,
+.portal-mode-switcher .mode-switch-button:active,
+body.mode-cidadao .portal-mode-switcher .mode-switch-button:focus,
+body.mode-cidadao .portal-mode-switcher .mode-switch-button:focus-visible,
+body.mode-cidadao .portal-mode-switcher .mode-switch-button:active,
+body.mode-contador .portal-mode-switcher .mode-switch-button:focus,
+body.mode-contador .portal-mode-switcher .mode-switch-button:focus-visible,
+body.mode-contador .portal-mode-switcher .mode-switch-button:active,
+body.mode-empresa .portal-mode-switcher .mode-switch-button:focus,
+body.mode-empresa .portal-mode-switcher .mode-switch-button:focus-visible,
+body.mode-empresa .portal-mode-switcher .mode-switch-button:active {
+  outline: none !important;
+  outline-offset: 0 !important;
+}
+
+.portal-mode-switcher .mode-switch-button.active,
+body.mode-cidadao .portal-mode-switcher .mode-switch-button.active,
+body.mode-contador .portal-mode-switcher .mode-switch-button.active,
+body.mode-empresa .portal-mode-switcher .mode-switch-button.active {
+  outline: none !important;
+  outline-offset: 0 !important;
+  box-shadow: 0 7px 18px rgba(21,34,56,.22) !important;
+  transform: translateY(-1px) !important;
+}
+
+.portal-mode-switcher .mode-switch-button:hover,
+.portal-mode-switcher .mode-switch-button:focus-visible {
+  outline: none !important;
+  box-shadow: 0 7px 18px rgba(21,34,56,.18) !important;
+  transform: translateY(-1px) !important;
+  filter: none !important;
+}
+
+/* A área ativa ganha destaque pelo próprio fundo, sem aro branco ou contorno duplo. */
+.portal-mode-switcher .mode-switch-cidadao.active {
+  background: #dfe5ec !important;
+  color: #111c30 !important;
+  border-color: #c7d0dc !important;
+}
+
+.portal-mode-switcher .mode-switch-contador.active {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+.portal-mode-switcher .mode-switch-empresa.active {
+  background: #0b2540 !important;
+  color: #ffffff !important;
+  border-color: #0b2540 !important;
+}
+
+
+/* === CORREÇÃO DEFINITIVA: COR DAS LETRAS DOS BOTÕES === */
+.portal-mode-switcher .mode-switch-cidadao,
+body.mode-cidadao .portal-mode-switcher .mode-switch-cidadao,
+body.mode-contador .portal-mode-switcher .mode-switch-cidadao,
+body.mode-empresa .portal-mode-switcher .mode-switch-cidadao,
+.portal-mode-switcher .mode-switch-cidadao .mode-switch-fallback,
+body.mode-cidadao .portal-mode-switcher .mode-switch-cidadao .mode-switch-fallback,
+body.mode-contador .portal-mode-switcher .mode-switch-cidadao .mode-switch-fallback,
+body.mode-empresa .portal-mode-switcher .mode-switch-cidadao .mode-switch-fallback {
+  color: #172238 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  -webkit-text-fill-color: #172238 !important;
+}
+
+.portal-mode-switcher .mode-switch-contador,
+body.mode-cidadao .portal-mode-switcher .mode-switch-contador,
+body.mode-contador .portal-mode-switcher .mode-switch-contador,
+body.mode-empresa .portal-mode-switcher .mode-switch-contador,
+.portal-mode-switcher .mode-switch-contador .mode-switch-fallback,
+body.mode-cidadao .portal-mode-switcher .mode-switch-contador .mode-switch-fallback,
+body.mode-contador .portal-mode-switcher .mode-switch-contador .mode-switch-fallback,
+body.mode-empresa .portal-mode-switcher .mode-switch-contador .mode-switch-fallback,
+.portal-mode-switcher .mode-switch-empresa,
+body.mode-cidadao .portal-mode-switcher .mode-switch-empresa,
+body.mode-contador .portal-mode-switcher .mode-switch-empresa,
+body.mode-empresa .portal-mode-switcher .mode-switch-empresa,
+.portal-mode-switcher .mode-switch-empresa .mode-switch-fallback,
+body.mode-cidadao .portal-mode-switcher .mode-switch-empresa .mode-switch-fallback,
+body.mode-contador .portal-mode-switcher .mode-switch-empresa .mode-switch-fallback,
+body.mode-empresa .portal-mode-switcher .mode-switch-empresa .mode-switch-fallback {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.portal-mode-switcher .mode-switch-cidadao:hover,
+.portal-mode-switcher .mode-switch-cidadao:focus,
+.portal-mode-switcher .mode-switch-cidadao:active,
+.portal-mode-switcher .mode-switch-cidadao.active {
+  color: #172238 !important;
+}
+
+.portal-mode-switcher .mode-switch-contador:hover,
+.portal-mode-switcher .mode-switch-contador:focus,
+.portal-mode-switcher .mode-switch-contador:active,
+.portal-mode-switcher .mode-switch-contador.active,
+.portal-mode-switcher .mode-switch-empresa:hover,
+.portal-mode-switcher .mode-switch-empresa:focus,
+.portal-mode-switcher .mode-switch-empresa:active,
+.portal-mode-switcher .mode-switch-empresa.active {
+  color: #ffffff !important;
+}
